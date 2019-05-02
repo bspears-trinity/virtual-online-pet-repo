@@ -3,7 +3,12 @@
 # ~~~~
 
 # Home page
-GET        /                             edu.trinity.webapps.controllers.Application.index
+GET         /                             	controllers.Application.index
+GET			/mainPage						controllers.Application.mainPage
+GET			/events							controllers.Application.events
+GET			/petPage						controllers.Application.petPage
+GET			/settings						controllers.Application.settings
+GET			/logout							controllers.Application.logout
 
 # Prefix must match `play.assets.urlPrefix`
 GET        /assets/*file                 controllers.Assets.at(file)

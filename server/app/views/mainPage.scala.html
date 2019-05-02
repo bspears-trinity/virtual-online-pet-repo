@@ -1,0 +1,15 @@
+@* mainPage Template File *@
+@(param: Any)
+
+@main("Virtual Pet") {
+<center>
+	<h2>Main Page</h2>
+	<ul>
+		<li><a href="@routes.Application.mainPage">Main</a></li>
+		<li><a href="@routes.Application.events">Events</a></li>
+		<li><a href="@routes.Application.petPage">Pet</a></li>
+		<li><a href="@routes.Application.settings">Settings</a></li>
+		<li><a href="@routes.Application.logout">Log out</a></li>
+	</ul>
+</center>
+}

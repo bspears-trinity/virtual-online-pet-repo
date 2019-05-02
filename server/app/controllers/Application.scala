@@ -1,4 +1,4 @@
-package edu.trinity.webapps.controllers
+package controllers
 
 import javax.inject._
 
@@ -12,4 +12,23 @@ class Application @Inject()(cc: ControllerComponents) extends AbstractController
     Ok(views.html.index(SharedMessages.itWorks))
   }
 
+  def mainPage = Action {
+    Ok(views.html.mainPage())
+  }
+  
+  def events = Action {
+    Ok(views.html.events())
+  }
+  
+  def petPage = Action {
+    Ok(views.html.petPage())
+  }
+
+  def settings = Action {
+    Ok(views.html.settings())
+  }
+  
+  def logout = Action { implicit request =>
+    Redirect(routes.Application.mainPage).withNewSession
+  }
 }
