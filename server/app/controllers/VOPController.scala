@@ -4,10 +4,24 @@ import javax.inject._
 
 import edu.trinity.webapps.shared.SharedMessages
 import play.api.mvc._
+import play.api.data._
+import play.api.data.Forms._
+
+case class LoginData(username: String, password: String)
+case class PasswordData(oldPassword: String, newPassword:String)
 
 @Singleton
 class VOPController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
-  
+  val loginForm = Form(mapping(
+    "username" -> nonEmptyText,
+    "password" -> nonEmptyText
+  )(LoginData.apply)(LoginData.unapply))
+
+  val changePasswordForm = Form(mapping( 
+    "oldPassword" -> nonEmptyText,
+    "newPassword" -> nonEmptyText
+  )(PasswordData.apply)(PasswordData.unapply))
+
   //TODO: Change view names to actual names used.
   
   //Simple view actions that return a view without additional processing.
@@ -113,6 +127,11 @@ class VOPController @Inject()(cc: ControllerComponents) extends AbstractControll
   def updateEvent = Action { implicit request => 
     //TODO: Check current time. Get last update time from model. Generate and apply events based on time passed. Update last update time. Update database.
     Ok("Event updated")
+  }
+
+  def newNotifications = Action { implicit request =>
+    //TODO: Check user's notifications for any that need to be displayed. Return new notifications and update database to show that they have been displayed.
+    Ok("New Notifications returned")
   }
 }
 

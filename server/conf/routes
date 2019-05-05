@@ -18,22 +18,22 @@ GET        /petView                      edu.trinity.webapps.controllers.VOPCont
 # More involved routes for when user takes an action that alters the model
 # User/pet info changes
 POST       /login                        edu.trinity.webapps.controllers.VOPController.login
-POST       /logout                       edu.trinity.webapps.controllers.VOPController.logout
+GET        /logout                       edu.trinity.webapps.controllers.VOPController.logout
 POST       /register                     edu.trinity.webapps.controllers.VOPController.register
 POST       /changePassword               edu.trinity.webapps.controllers.VOPController.changePassword
-POST       /deleteUser                   edu.trinity.webapps.controllers.VOPController.deleteUser
-POST       /newPet                       edu.trinity.webapps.controllers.VOPController.newPet
-POST       /abandonPet                   edu.trinity.webapps.controllers.VOPController.abandonPet
+GET        /newPet                       edu.trinity.webapps.controllers.VOPController.newPet
+GET        /abandonPet                   edu.trinity.webapps.controllers.VOPController.abandonPet
 # Main view actions
-POST       /walkPet                      edu.trinity.webapps.controllers.VOPController.walkPet
-POST       /groomPet                     edu.trinity.webapps.controllers.VOPController.groomPet
-POST       /showPet                      edu.trinity.webapps.controllers.VOPController.showPet
+GET        /walkPet                      edu.trinity.webapps.controllers.VOPController.walkPet
+GET        /groomPet                     edu.trinity.webapps.controllers.VOPController.groomPet
+GET        /showPet                      edu.trinity.webapps.controllers.VOPController.showPet
 # Shop view actions
-POST       /buyItem                      edu.trinity.webapps.controllers.VOPController.buyItem
+GET        /buyItem                      edu.trinity.webapps.controllers.VOPController.buyItem
 
-# Routes for handling randomly generated events
+# Routes for handling events
 # Route called on an interval by javascript on logged-in views.
-POST       /updateEvent                  edu.trinity.webapps.controllers.VOPController.updateEvent
+GET        /updateEvent                  edu.trinity.webapps.controllers.VOPController.updateEvent
+GET        /newNotifications             edu.trinity.webapps.controllers.VOPController.newNotifications
 
 # Prefix must match `play.assets.urlPrefix`
 GET        /assets/*file                 controllers.Assets.at(file)
