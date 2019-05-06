@@ -4,9 +4,9 @@
 
 # Home page
 GET         /                             	controllers.Application.index
-GET			/mainPage						controllers.Application.mainPage
+GET			/map							controllers.Application.map
 GET			/events							controllers.Application.events
-GET			/petPage						controllers.Application.petPage
+GET			/pet							controllers.Application.pet
 GET			/settings						controllers.Application.settings
 GET			/logout							controllers.Application.logout
 

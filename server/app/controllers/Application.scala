@@ -12,16 +12,16 @@ class Application @Inject()(cc: ControllerComponents) extends AbstractController
     Ok(views.html.index(SharedMessages.itWorks))
   }
 
-  def mainPage = Action {
-    Ok(views.html.mainPage())
+  def map = Action {
+    Ok(views.html.map())
   }
   
   def events = Action {
     Ok(views.html.events())
   }
   
-  def petPage = Action {
-    Ok(views.html.petPage())
+  def pet = Action {
+    Ok(views.html.pet())
   }
 
   def settings = Action {
@@ -29,6 +29,6 @@ class Application @Inject()(cc: ControllerComponents) extends AbstractController
   }
   
   def logout = Action { implicit request =>
-    Redirect(routes.Application.mainPage).withNewSession
+    Redirect(routes.Application.map).withNewSession
   }
 }
