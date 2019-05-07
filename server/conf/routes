@@ -9,6 +9,10 @@ GET			/events							controllers.Application.events
 GET			/pet							controllers.Application.pet
 GET			/settings						controllers.Application.settings
 GET			/logout							controllers.Application.logout
+GET         /login                     		controllers.Application.login
+GET         /accountCreation                controllers.Application.accountCreation
+GET         /changePW              			controllers.Application.changePW
+GET         /chooseYourPet                  controllers.Application.chooseYourPet
 
 # Prefix must match `play.assets.urlPrefix`
 GET        /assets/*file                 controllers.Assets.at(file)

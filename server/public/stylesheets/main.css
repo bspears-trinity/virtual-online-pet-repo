@@ -1,3 +1,49 @@
+body {
+        background-color: beige;
+}
+
+h1 {
+    font-family: "Times New Roman";
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+    text-align: center;
+    text-decoration: "none";
+    color: "black";
+}
+
+h2 {
+    font-family: "Times New Roman";
+    margin: auto;
+    width: 50%;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+}
+
+p {
+    margin: auto;
+    width: 50%;
+    text-align: center;
+    padding: 10px;
+}
+
+.pet {
+  margin: 15px;
+  float: center;
+  padding: 5px;
+}
+
+img {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.loginform {
+    padding: 50px;
+    text-align: center;
+}
+
 .menu li {
 	display: inline;
 }

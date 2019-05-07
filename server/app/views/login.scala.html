@@ -1,0 +1,21 @@
+@* login Template File *@
+@(param: Any)
+
+@main("login") {
+    <h1><a href="login">Virtual Online Pet</a></h1>
+    <div></div>
+    <h2>Login</h2>    
+    <div></div>
+    
+
+    
+    <div class="loginform">
+    <form action="chooseYourPet" method="get">
+        <input type="text" name="Username"></input>
+        <input type="text" name="Password"></input>
+        <input type="submit" name="Login"></input>
+    </form>
+    </div>
+    
+    <p><a href="accountCreation">Create New Account</a></p>
+}
