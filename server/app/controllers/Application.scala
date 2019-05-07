@@ -50,4 +50,8 @@ class Application @Inject()(cc: ControllerComponents) extends AbstractController
   def chooseYourPet = Action {
     Ok(views.html.chooseYourPet("Username"))
   }
+  
+  def shop = Action {
+    Ok(views.html.shop())
+  }
 }

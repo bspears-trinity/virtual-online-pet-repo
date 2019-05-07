@@ -75,9 +75,9 @@ img {
 }
 
 .alert {
-	padding-top: 5px;
-	padding-right: 25px;
-	float: right;
+	top: 150px;
+	right: 25px;
+	position: absolute;
 	width: 300px;
 }
 
@@ -97,19 +97,53 @@ img {
 }
 
 .pic {
-	padding-top: 200px;
-	padding-left: 400px;
-	float: left;
+	padding-top: 50px;
+	padding-left: 150px;
 	width: 300px;
+	float:left;
 }
 
 .info {
-	padding-top:200px;
-	padding-left: 200px;
-	float: left;
 	width: 150px;
+	padding-top:50px;
+	padding-left:150px;
+	float:left;
 }
 
 .info ul {
 	align: center;
+}
+
+.map a{
+	font-size: 30px;
+	background-color: #111;
+	padding: 20px 30px;
+	display: block;
+	color: white;
+	text-align: center;
+	text-decoration: none;
+}
+
+#map11 {
+	top:300px;
+	left:300px;
+	position:absolute;
+}
+
+#map12 {
+	top:300px;
+	right:300px;
+	position:absolute;
+}
+
+#map21 {
+	bottom:300px;
+	left:300px;
+	position:absolute;
+}
+
+#map22 {
+	bottom:300px;
+	right:300px;
+	position:absolute;
 }

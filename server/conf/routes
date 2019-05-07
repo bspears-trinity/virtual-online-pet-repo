@@ -13,6 +13,7 @@ GET         /login                     		controllers.Application.login
 GET         /accountCreation                controllers.Application.accountCreation
 GET         /changePW              			controllers.Application.changePW
 GET         /chooseYourPet                  controllers.Application.chooseYourPet
+GET			/shop							controllers.Application.shop
 
 # Prefix must match `play.assets.urlPrefix`
 GET        /assets/*file                 controllers.Assets.at(file)

@@ -1,4 +1,4 @@
-@* mainPage Template File *@
+@* shop Template File *@
 @(param: Any)
 
 @main("Virtual Pet") {
@@ -8,9 +8,9 @@
 </head>
 
 <center>
-	<h2>Main Page</h2>
+	<h2>Shop</h2>
 	<ul class="menu">
-		<li><a class="active" href="@routes.Application.map">Main</a></li>
+		<li><a href="@routes.Application.map">Main</a></li>
 		<li><a href="@routes.Application.events">Events</a></li>
 		<li><a href="@routes.Application.pet">Pet</a></li>
 		<li><a href="@routes.Application.settings">Settings</a></li>
@@ -19,11 +19,29 @@
 </center>
 
 <div>
-	<div class="map">
-		<a id="map11">Show Off Your Pet</a>
-		<a id="map12">Walk Your Pet</a>
-		<a id="map21">Groom Your Pet</a>
-		<a id="map22" href="@routes.Application.shop">Shop</a>
+	<div class="pic">
+		INSERT PICTURE OF SHOP KEEP HERE
+	</div>
+	<div class="info">
+		<center>Stock</center>
+		<ul>
+			<li>
+				Item 1
+				<form @*action="" type="get"*@>
+					<input type="submit" value="Buy"></input>
+				</form>
+			</li>
+			<li>Item 2
+				<form @*action="" type="get"*@>
+					<input type="submit" value="Buy"></input>
+				</form>
+			</li>
+			<li>Item 3
+				<form @*action="" type="get"*@>
+					<input type="submit" value="Buy"></input>
+				</form>
+			</li>
+		</ul>
 	</div>
 	<div class="alert">
 		<center>Notifications</center>
