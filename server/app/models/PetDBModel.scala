@@ -158,7 +158,7 @@ class PetDBModel {
     }
   }
   
-  def addEvent(username: String, EventID: Int, Probability: Float, AffectionInc: Int, HungerInc: Int, ExhaustionInc: Int, MoneyInc: Int, db: Database)(implicit ec: ExecutionContext): Future[Int] = {
+  def addEvent(username: String, EventID: Int, db: Database)(implicit ec: ExecutionContext): Future[Int] = {
   	//add event to table and apply to user. If event is already found, only apply to user
     val uids = db.run {
       (for {
