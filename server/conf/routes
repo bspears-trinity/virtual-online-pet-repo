@@ -4,36 +4,36 @@
 
 # VOP Routes
 # Simple get routes to load views
-GET        /                             edu.trinity.webapps.controllers.VOPController.loginView
-GET        /loginView                    edu.trinity.webapps.controllers.VOPController.loginView
-GET        /registerView                 edu.trinity.webapps.controllers.VOPController.registerView
-GET        /changePasswordView           edu.trinity.webapps.controllers.VOPController.changePasswordView
-GET        /chooseNewPetView             edu.trinity.webapps.controllers.VOPController.chooseNewPetView
-GET        /mainView                     edu.trinity.webapps.controllers.VOPController.mainView
-GET        /shopView                     edu.trinity.webapps.controllers.VOPController.shopView
-GET        /settingsView                 edu.trinity.webapps.controllers.VOPController.settingsView
-GET        /eventsView                   edu.trinity.webapps.controllers.VOPController.eventsView
-GET        /petView                      edu.trinity.webapps.controllers.VOPController.petView
+GET        /                             controllers.VOPController.loginView
+GET        /loginView                    controllers.VOPController.loginView
+GET        /registerView                 controllers.VOPController.registerView
+GET        /changePasswordView           controllers.VOPController.changePasswordView
+GET        /chooseNewPetView             controllers.VOPController.chooseNewPetView
+GET        /mainView                     controllers.VOPController.mainView
+GET        /shopView                     controllers.VOPController.shopView
+GET        /settingsView                 controllers.VOPController.settingsView
+GET        /eventsView                   controllers.VOPController.eventsView
+GET        /petView                      controllers.VOPController.petView
 
 # More involved routes for when user takes an action that alters the model
 # User/pet info changes
-POST       /login                        edu.trinity.webapps.controllers.VOPController.login
-GET        /logout                       edu.trinity.webapps.controllers.VOPController.logout
-POST       /register                     edu.trinity.webapps.controllers.VOPController.register
-POST       /changePassword               edu.trinity.webapps.controllers.VOPController.changePassword
-GET        /newPet                       edu.trinity.webapps.controllers.VOPController.newPet
-GET        /abandonPet                   edu.trinity.webapps.controllers.VOPController.abandonPet
+POST       /login                        controllers.VOPController.login
+GET        /logout                       controllers.VOPController.logout
+POST       /register                     controllers.VOPController.register
+POST       /changePassword               controllers.VOPController.changePassword
+GET        /newPet                       controllers.VOPController.newPet
+GET        /abandonPet                   controllers.VOPController.abandonPet
 # Main view actions
-GET        /walkPet                      edu.trinity.webapps.controllers.VOPController.walkPet
-GET        /groomPet                     edu.trinity.webapps.controllers.VOPController.groomPet
-GET        /showPet                      edu.trinity.webapps.controllers.VOPController.showPet
+GET        /walkPet                      controllers.VOPController.walkPet
+GET        /groomPet                     controllers.VOPController.groomPet
+GET        /showPet                      controllers.VOPController.showPet
 # Shop view actions
-GET        /buyItem                      edu.trinity.webapps.controllers.VOPController.buyItem
+GET        /buyItem                      controllers.VOPController.buyItem
 
 # Routes for handling events
 # Route called on an interval by javascript on logged-in views.
-GET        /updateEvent                  edu.trinity.webapps.controllers.VOPController.updateEvent
-GET        /newNotifications             edu.trinity.webapps.controllers.VOPController.newNotifications
+GET        /updateEvent                  controllers.VOPController.updateEvent
+GET        /newNotifications             controllers.VOPController.newNotifications
 
 # Prefix must match `play.assets.urlPrefix`
 GET        /assets/*file                 controllers.Assets.at(file)
