@@ -1,0 +1,18 @@
+2019-05-09 14:09:38,442  WARN [ModalContext] - ScalaProject - Project server has platform default sourceLevel.
+2019-05-09 14:09:38,444  WARN [ModalContext] - ScalaProject - Project server runs on platform default installation.
+2019-05-09 14:09:38,449  WARN [ModalContext] - ScalaProject - Project CSCI3345-S19-Shared has platform default sourceLevel.
+2019-05-09 14:09:38,449  WARN [ModalContext] - ScalaProject - Project CSCI3345-S19-Shared runs on platform default installation.
+2019-05-09 14:09:38,449  WARN [ModalContext] - ScalaProject - Project client has platform default sourceLevel.
+2019-05-09 14:09:38,449  WARN [ModalContext] - ScalaProject - Project client runs on platform default installation.
+2019-05-09 14:09:39,606  WARN [ModalContext] - ScalaProject - Project CSCI3345-S19-Shared has platform default sourceLevel.
+2019-05-09 14:09:39,606  WARN [ModalContext] - ScalaProject - Project CSCI3345-S19-Shared runs on platform default installation.
+2019-05-09 14:09:39,639  WARN [ModalContext] - ScalaProject - Project client has platform default sourceLevel.
+2019-05-09 14:09:39,639  WARN [ModalContext] - ScalaProject - Project client runs on platform default installation.
+2019-05-09 14:09:40,195  WARN [ModalContext] - ScalaProject - Project server has platform default sourceLevel.
+2019-05-09 14:09:40,196  WARN [ModalContext] - ScalaProject - Project server runs on platform default installation.
+2019-05-09 14:09:40,562  WARN [Worker-11] - ScalaProject - Project CSCI3345-S19-Shared has platform default sourceLevel.
+2019-05-09 14:09:40,563  WARN [Worker-11] - ScalaProject - Project CSCI3345-S19-Shared runs on platform default installation.
+2019-05-09 14:09:41,249  WARN [Worker-2] - ScalaProject - Project server has platform default sourceLevel.
+2019-05-09 14:09:41,249  WARN [Worker-2] - ScalaProject - Project server runs on platform default installation.
+2019-05-09 14:09:41,518  WARN [main] - org.scala-ide.sdt.core - org.scala-ide.sdt.core - org.scala-ide.sdt.core - 0 - Preference scala.compiler.sourceLevel was uninitialized for server, setting default to 2.12.
+2019-05-09 14:09:41,520  WARN [main] - org.scala-ide.sdt.core - org.scala-ide.sdt.core - org.scala-ide.sdt.core - 0 - Preference scala.compiler.installation was uninitialized for server, setting default to 2.12.
