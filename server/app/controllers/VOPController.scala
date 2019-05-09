@@ -1,4 +1,4 @@
-package edu.trinity.webapps.controllers
+package controllers
 
 import javax.inject._
 
@@ -28,11 +28,11 @@ class VOPController @Inject()(cc: ControllerComponents) extends AbstractControll
   //TODO: Check to ensure that user is logged in for all Get routes, and load error screen if not.
   
   def loginView = Action {
-    Ok(views.html.index("Login view"))
+    Ok(views.html.login())
   }
   
   def registerView = Action {
-    Ok(views.html.index("Register view"))  
+    Ok(views.html.accountCreation())  
   }
   
   def changePasswordView = Action {
@@ -40,27 +40,29 @@ class VOPController @Inject()(cc: ControllerComponents) extends AbstractControll
   }
   
   def chooseNewPetView = Action {
-    Ok(views.html.index("Choose new pet view"))
+    Ok(views.html.chooseYourPet())
   }
   
   def mainView = Action {
-    Ok(views.html.index("Main view"))
+    Ok(views.html.map())
   }
   
   def shopView = Action {
-    Ok(views.html.index("Shop view"))
+    //get money from DB
+    Ok(views.html.shop(10))
   }
   
   def settingsView = Action {
-    Ok(views.html.index("Settings view"))
+    Ok(views.html.settings())
   }
   
   def eventsView = Action {
-    Ok(views.html.index("Events view"))
+    Ok(views.html.events())
   }
   
   def petView = Action {
-    Ok(views.html.index("Pet view"))
+    //get hunger/affection/exhaustion from DB
+    Ok(views.html.pet(10,10,10))
   }
   
   //More involved actions that get form data and manipulate model before redirecting.
@@ -72,7 +74,7 @@ class VOPController @Inject()(cc: ControllerComponents) extends AbstractControll
   
   def logout = Action { implicit request => 
     //TODO: Clear user info and end session, then return login view.
-    Ok(views.html.index("Logged out: redirect to login view"))
+    Ok(views.html.login()).withNewSession
   }
   
   def register = Action { implicit request =>
@@ -87,17 +89,17 @@ class VOPController @Inject()(cc: ControllerComponents) extends AbstractControll
   
   def deleteUser = Action { implicit request =>
     //TODO: Clear user info from database, end session, and return login view
-    Ok(views.html.index("User deleted: redirect to login view"))
+    Ok(views.html.login()).withNewSession
   }
   
   def newPet = Action { implicit request => 
     //TODO: Get form data on new pet and add to database through model.
-    Ok(views.html.index("New pet chosen: redirect to Main view"))
+    Ok(views.html.map())
   }
   
   def abandonPet = Action { implicit request => 
     //TODO: Clear pet info from database.
-    Ok(views.html.index("Pet abandoned: redirect to Choosing view"))
+    Ok(views.html.chooseYourPet())
   }
   
   def walkPet = Action { implicit request =>
