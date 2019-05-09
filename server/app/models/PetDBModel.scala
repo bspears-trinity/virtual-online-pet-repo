@@ -176,6 +176,23 @@ class PetDBModel {
     }
   }
   
+  def viewEvent(username: String, message: String, db: Database) {
+    db.run {
+      val view =for {
+        u <- User
+        if u.username === username
+        e <- Event
+        if e.message === message
+        ue <- Userevent
+        if e.id === ue.notificationid
+        if u.id === ue.userid
+      } yield {
+        ue.viewed
+      }
+      view.update('T')
+    }
+  }
+  
   def getStats(username: String, db: Database)(implicit ec: ExecutionContext): Future[StatsRow] = {
   	val ids = db.run {
       (for {
