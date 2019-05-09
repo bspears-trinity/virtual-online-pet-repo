@@ -20,7 +20,8 @@ class Application @Inject()(cc: ControllerComponents) extends AbstractController
   }
   
   def pet = Action {
-    Ok(views.html.pet())
+    //get hunger/affection/exhaustion from DB
+    Ok(views.html.pet(10,10,10))
   }
 
   def settings = Action {
@@ -52,6 +53,7 @@ class Application @Inject()(cc: ControllerComponents) extends AbstractController
   }
   
   def shop = Action {
-    Ok(views.html.shop())
+    //get money from DB
+    Ok(views.html.shop(10))
   }
 }

@@ -1,5 +1,5 @@
 @* petPage Template File *@
-@(param: Any)
+@(hunger:Int, affection:Int, exhaustion:Int)
 
 @main("Virtual Pet") {
 
@@ -25,9 +25,9 @@
 	<div class="info">
 		<center>Status</center>
 		<ul>
-			<li id="hunger">Hunger: 0/10</li>
-			<li id="affection">Affection: 10/10</li>
-			<li id="exhaustion">Exhaustion: 8/10</li>
+			<li id="hunger">Hunger: @hunger/10</li>
+			<li id="affection">Affection: @affection/10</li>
+			<li id="exhaustion">Exhaustion: @exhaustion/10</li>
 		</ul>
 	</div>
 	<div class="alert">
