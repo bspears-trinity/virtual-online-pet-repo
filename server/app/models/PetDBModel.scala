@@ -158,16 +158,8 @@ class PetDBModel {
     }
   }
   
-  def addEvent(username: String, message: String, Probability: Float, AffectionInc: Int, HungerInc: Int, ExhaustionInc: Int, MoneyInc: Int, db: Database)(implicit ec: ExecutionContext): Future[Int] = {
+  def addEvent(username: String, EventID: Int, Probability: Float, AffectionInc: Int, HungerInc: Int, ExhaustionInc: Int, MoneyInc: Int, db: Database)(implicit ec: ExecutionContext): Future[Int] = {
   	//add event to table and apply to user. If event is already found, only apply to user
-  	val k = db.run {
-  	  Event.filter(_.message === message).exists.result
-  	}
-  	
-  	k.map(b => if(!b) { 
-  	  db.run(Event += EventRow(0,message,Probability,AffectionInc,HungerInc,ExhaustionInc,MoneyInc))
-  	})
-  	
     val uids = db.run {
       (for {
         u <- User
@@ -177,21 +169,10 @@ class PetDBModel {
       }).result
     }
   	
-  	val eids = db.run {
-      (for {
-        e <- Event
-        if e.message === message
-      } yield {
-        e.id
-      }).result
-    }
-  	
     uids.flatMap { useq =>
-      eids.flatMap { eseq =>
-        val date = new java.util.Date()
-        val sqlDate = new java.sql.Date(date.getTime())
-        db.run(Userevent += UsereventRow(0, useq.head, eseq.head, sqlDate, 'F'))        
-      }
+      val date = new java.util.Date()
+      val sqlDate = new java.sql.Date(date.getTime())
+      db.run(Userevent += UsereventRow(0, useq.head, EventID, sqlDate, 'F'))        
     }
   }
   
