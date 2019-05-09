@@ -16,3 +16,5 @@
 2019-05-09 14:09:41,249  WARN [Worker-2] - ScalaProject - Project server runs on platform default installation.
 2019-05-09 14:09:41,518  WARN [main] - org.scala-ide.sdt.core - org.scala-ide.sdt.core - org.scala-ide.sdt.core - 0 - Preference scala.compiler.sourceLevel was uninitialized for server, setting default to 2.12.
 2019-05-09 14:09:41,520  WARN [main] - org.scala-ide.sdt.core - org.scala-ide.sdt.core - org.scala-ide.sdt.core - 0 - Preference scala.compiler.installation was uninitialized for server, setting default to 2.12.
+2019-05-09 16:54:54,894  WARN [main] - org.scala-ide.sdt.core - org.scala-ide.sdt.core - org.scala-ide.sdt.core - 0 - Preference scala.compiler.sourceLevel was uninitialized for server, setting default to 2.12.
+2019-05-09 16:54:54,909  WARN [main] - org.scala-ide.sdt.core - org.scala-ide.sdt.core - org.scala-ide.sdt.core - 0 - Preference scala.compiler.installation was uninitialized for server, setting default to 2.12.
