@@ -14,7 +14,7 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = Array(Event.schema, Pet.schema, Stats.schema, User.schema, Userdate.schema, Userevent.schema).reduceLeft(_ ++ _)
+  lazy val schema: profile.SchemaDescription = Array(Event.schema, Money.schema, Pet.schema, Stats.schema, User.schema, Userdate.schema, Userevent.schema).reduceLeft(_ ++ _)
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
 
@@ -56,6 +56,35 @@ trait Tables {
   /** Collection-like TableQuery object for table Event */
   lazy val Event = new TableQuery(tag => new Event(tag))
 
+  /** Entity class storing rows of table Money
+   *  @param id Database column ID SqlType(INT), AutoInc, PrimaryKey
+   *  @param userid Database column UserID SqlType(INT)
+   *  @param money Database column Money SqlType(INT)
+   *  @param dateofmoney Database column DateOfMoney SqlType(DATE) */
+  case class MoneyRow(id: Int, userid: Int, money: Int, dateofmoney: java.sql.Date)
+  /** GetResult implicit for fetching MoneyRow objects using plain SQL queries */
+  implicit def GetResultMoneyRow(implicit e0: GR[Int], e1: GR[java.sql.Date]): GR[MoneyRow] = GR{
+    prs => import prs._
+    MoneyRow.tupled((<<[Int], <<[Int], <<[Int], <<[java.sql.Date]))
+  }
+  /** Table description of table Money. Objects of this class serve as prototypes for rows in queries. */
+  class Money(_tableTag: Tag) extends profile.api.Table[MoneyRow](_tableTag, Some("virtualpet"), "Money") {
+    def * = (id, userid, money, dateofmoney) <> (MoneyRow.tupled, MoneyRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(id), Rep.Some(userid), Rep.Some(money), Rep.Some(dateofmoney))).shaped.<>({r=>import r._; _1.map(_=> MoneyRow.tupled((_1.get, _2.get, _3.get, _4.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column ID SqlType(INT), AutoInc, PrimaryKey */
+    val id: Rep[Int] = column[Int]("ID", O.AutoInc, O.PrimaryKey)
+    /** Database column UserID SqlType(INT) */
+    val userid: Rep[Int] = column[Int]("UserID")
+    /** Database column Money SqlType(INT) */
+    val money: Rep[Int] = column[Int]("Money")
+    /** Database column DateOfMoney SqlType(DATE) */
+    val dateofmoney: Rep[java.sql.Date] = column[java.sql.Date]("DateOfMoney")
+  }
+  /** Collection-like TableQuery object for table Money */
+  lazy val Money = new TableQuery(tag => new Money(tag))
+
   /** Entity class storing rows of table Pet
    *  @param id Database column ID SqlType(INT), AutoInc, PrimaryKey
    *  @param userid Database column UserID SqlType(INT)
@@ -94,19 +123,18 @@ trait Tables {
    *  @param affection Database column Affection SqlType(INT)
    *  @param hunger Database column Hunger SqlType(INT)
    *  @param exhaustion Database column Exhaustion SqlType(INT)
-   *  @param money Database column Money SqlType(INT)
    *  @param statdate Database column StatDate SqlType(DATE) */
-  case class StatsRow(id: Int, petid: Int, affection: Int, hunger: Int, exhaustion: Int, money: Int, statdate: java.sql.Date)
+  case class StatsRow(id: Int, petid: Int, affection: Int, hunger: Int, exhaustion: Int, statdate: java.sql.Date)
   /** GetResult implicit for fetching StatsRow objects using plain SQL queries */
   implicit def GetResultStatsRow(implicit e0: GR[Int], e1: GR[java.sql.Date]): GR[StatsRow] = GR{
     prs => import prs._
-    StatsRow.tupled((<<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[java.sql.Date]))
+    StatsRow.tupled((<<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[java.sql.Date]))
   }
   /** Table description of table Stats. Objects of this class serve as prototypes for rows in queries. */
   class Stats(_tableTag: Tag) extends profile.api.Table[StatsRow](_tableTag, Some("virtualpet"), "Stats") {
-    def * = (id, petid, affection, hunger, exhaustion, money, statdate) <> (StatsRow.tupled, StatsRow.unapply)
+    def * = (id, petid, affection, hunger, exhaustion, statdate) <> (StatsRow.tupled, StatsRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(id), Rep.Some(petid), Rep.Some(affection), Rep.Some(hunger), Rep.Some(exhaustion), Rep.Some(money), Rep.Some(statdate))).shaped.<>({r=>import r._; _1.map(_=> StatsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(id), Rep.Some(petid), Rep.Some(affection), Rep.Some(hunger), Rep.Some(exhaustion), Rep.Some(statdate))).shaped.<>({r=>import r._; _1.map(_=> StatsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column ID SqlType(INT), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("ID", O.AutoInc, O.PrimaryKey)
@@ -118,8 +146,6 @@ trait Tables {
     val hunger: Rep[Int] = column[Int]("Hunger")
     /** Database column Exhaustion SqlType(INT) */
     val exhaustion: Rep[Int] = column[Int]("Exhaustion")
-    /** Database column Money SqlType(INT) */
-    val money: Rep[Int] = column[Int]("Money")
     /** Database column StatDate SqlType(DATE) */
     val statdate: Rep[java.sql.Date] = column[java.sql.Date]("StatDate")
   }
