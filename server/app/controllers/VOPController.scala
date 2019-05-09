@@ -9,6 +9,7 @@ import play.api.data.Forms._
 
 case class LoginData(username: String, password: String)
 case class PasswordData(oldPassword: String, newPassword:String)
+case class PetData(name: String, pic: Int)
 
 @Singleton
 class VOPController @Inject()(protected val dbConfigProvider: DatabaseConfigProvider, cc: ControllerComponents) 
@@ -23,6 +24,11 @@ class VOPController @Inject()(protected val dbConfigProvider: DatabaseConfigProv
     "oldPassword" -> nonEmptyText,
     "newPassword" -> nonEmptyText
   )(PasswordData.apply)(PasswordData.unapply))
+  
+  val newPetForm = Form(mapping(
+      "name" -> nonEmptyText,
+      "pic" -> number(0, 5)
+  )(PetData.apply)(PetData.unapply))
   
   //Simple view actions that return a view without additional processing.
   //TODO: Check to ensure that user is logged in for all Get routes, and load login screen if not.
