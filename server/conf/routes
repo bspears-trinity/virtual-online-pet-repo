@@ -21,6 +21,7 @@ POST       /login                        controllers.VOPController.login
 GET        /logout                       controllers.VOPController.logout
 POST       /register                     controllers.VOPController.register
 POST       /changePassword               controllers.VOPController.changePassword
+
 POST       /newPet                       controllers.VOPController.newPet
 GET        /abandonPet                   controllers.VOPController.abandonPet
 # Main view actions
@@ -28,7 +29,7 @@ GET        /walkPet                      controllers.VOPController.walkPet
 GET        /groomPet                     controllers.VOPController.groomPet
 GET        /showPet                      controllers.VOPController.showPet
 # Shop view actions
-GET        /buyItem                      controllers.VOPController.buyItem
+GET        /buyItem/:itemID              controllers.VOPController.buyItem(itemID: Int)
 
 # Routes for handling events
 # Route called on an interval by javascript on logged-in views.

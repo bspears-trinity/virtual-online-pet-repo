@@ -11,7 +11,9 @@ case class LoginData(username: String, password: String)
 case class PasswordData(oldPassword: String, newPassword:String)
 
 @Singleton
-class VOPController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
+class VOPController @Inject()(protected val dbConfigProvider: DatabaseConfigProvider, cc: ControllerComponents) 
+  extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
+
   val loginForm = Form(mapping(
     "username" -> nonEmptyText,
     "password" -> nonEmptyText
@@ -21,22 +23,20 @@ class VOPController @Inject()(cc: ControllerComponents) extends AbstractControll
     "oldPassword" -> nonEmptyText,
     "newPassword" -> nonEmptyText
   )(PasswordData.apply)(PasswordData.unapply))
-
-  //TODO: Change view names to actual names used.
   
   //Simple view actions that return a view without additional processing.
-  //TODO: Check to ensure that user is logged in for all Get routes, and load error screen if not.
+  //TODO: Check to ensure that user is logged in for all Get routes, and load login screen if not.
   
   def loginView = Action {
-    Ok(views.html.login())
+    Ok(views.html.login(loginForm))
   }
   
   def registerView = Action {
-    Ok(views.html.accountCreation())  
+    Ok(views.html.accountCreation(loginForm))  
   }
   
   def changePasswordView = Action {
-    Ok(views.html.index("Change password view"))
+    Ok(views.html.changePW(changePasswordForm))
   }
   
   def chooseNewPetView = Action {
@@ -47,10 +47,9 @@ class VOPController @Inject()(cc: ControllerComponents) extends AbstractControll
     Ok(views.html.map())
   }
   
-  def shopView = Action {
-    //get money from DB
-    Ok(views.html.shop(10))
-  }
+  def shopView = Action.async { implicit request => {
+    Ok(views.html.shop())
+  }}
   
   def settingsView = Action {
     Ok(views.html.settings())
@@ -60,26 +59,48 @@ class VOPController @Inject()(cc: ControllerComponents) extends AbstractControll
     Ok(views.html.events())
   }
   
-  def petView = Action {
-    //get hunger/affection/exhaustion from DB
-    Ok(views.html.pet(10,10,10))
+  def petView = Action.async { implicit request => 
+    model.getStats(request.session.get("username"), db).map(statsRow => {
+      Redirect(views.html.pet(statsRow.hunger, statsRow.affection, statsRow.exhaustion))
+    })    
   }
   
   //More involved actions that get form data and manipulate model before redirecting.
   
-  def login = Action { implicit request =>
-    //TODO: Verify user credentials through database, load user info into model, start session and return main page
-    Ok(views.html.index("Logged in: redirect to main view"))
+  def login = Action.async { implicit request =>
+    //Gets user credentials from form, then verifies them through the database. If valid, starts a user session and directs to main page. Else, return to login page.
+    loginForm.bindFromRequest.fold(
+      formWithErrors => BadRequest(views.html.login(formWithErrors)),
+      credentials => {
+        val isValid = models.PetDBModel.getLogin(credentials.username, credentials.password, db)
+        isValid.map(valid => {
+          if (valid) {
+            Redirect(routes.VOPController.mainView).withSession("username" -> credentials.username)
+          } else {
+            BadRequest(views.html.login(loginForm))
+          }
+        })    
+      }
+    )
   }
   
   def logout = Action { implicit request => 
-    //TODO: Clear user info and end session, then return login view.
+    //Clear user info and end session, then return login view.
     Ok(views.html.login()).withNewSession
   }
   
-  def register = Action { implicit request =>
-    //TODO: Update database with new user info through model, start session, and return choosing view.
-    Ok(views.html.index("Registered new user: redirect to Choosing view"))  
+  def register = Action.async { implicit request =>
+    //Update database with new user info through model, start session, and return choosing view.
+    loginForm.bindFromRequest.fold(
+      formWithErrors => BadRequest(views.html.accountCreation(formWithErrors)),
+      credentials => {
+        val addUser = models.PetDBModel.addUser(credentials.username, credentials.password, db)
+        addUser.map(result => {
+          //TODO: Use result to determine success. On failure, return to accountCreation view.
+          Redirect(routes.VOPController.chooseNewPetView).withSession("username" -> credentials.username)
+        })
+      }
+    )
   }
   
   def changePassword = Action { implicit request => 
@@ -92,7 +113,7 @@ class VOPController @Inject()(cc: ControllerComponents) extends AbstractControll
     Ok(views.html.login()).withNewSession
   }
   
-  def newPet = Action { implicit request => 
+  def newPet(petImg: Int) = Action { implicit request => 
     //TODO: Get form data on new pet and add to database through model.
     Ok(views.html.map())
   }
@@ -120,7 +141,7 @@ class VOPController @Inject()(cc: ControllerComponents) extends AbstractControll
     Ok("Pet groomed")
   }
   
-  def buyItem = Action { implicit request =>
+  def buyItem(itemID: Int) = Action { implicit request =>
     //TODO: Check if buy is possible with current money. If so, update parameters, then update database.
     //TODO: Use JQuery to update money label
     Ok("Item bought")

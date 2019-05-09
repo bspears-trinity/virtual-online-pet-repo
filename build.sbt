@@ -1,7 +1,7 @@
 import sbtcrossproject.{crossProject, CrossType}
 
 lazy val server = (project in file("server")).settings(commonSettings).settings(
-	name := "CSCI3345-S19-Server",
+	name := "CSCI3345-S19-Project-Server",
   scalaJSProjects := Seq(client),
   pipelineStages in Assets := Seq(scalaJSPipeline),
   pipelineStages := Seq(digest, gzip),
@@ -22,7 +22,7 @@ lazy val server = (project in file("server")).settings(commonSettings).settings(
   dependsOn(sharedJvm)
 
 lazy val client = (project in file("client")).settings(commonSettings).settings(
-	name := "CSCI3345-S19-Client",
+	name := "CSCI3345-S19-Project-Client",
   scalaJSUseMainModuleInitializer := true,
   libraryDependencies ++= Seq(
     "org.scala-js" %%% "scalajs-dom" % "0.9.5"
@@ -34,7 +34,7 @@ lazy val shared = crossProject(JSPlatform, JVMPlatform)
   .crossType(CrossType.Pure)
   .in(file("shared"))
   .settings(
-		name := "CSCI3345-S19-Shared",
+		name := "CSCI3345-S19-Project-Shared",
 		commonSettings)
 lazy val sharedJvm = shared.jvm
 lazy val sharedJs = shared.js
