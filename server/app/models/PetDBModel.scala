@@ -158,7 +158,7 @@ class PetDBModel {
     }
   }
   
-  def addEvent(username: String, EventID: Int, Probability: Float, AffectionInc: Int, HungerInc: Int, ExhaustionInc: Int, MoneyInc: Int, db: Database)(implicit ec: ExecutionContext): Future[Int] = {
+  def addEvent(username: String, EventID: Int, db: Database)(implicit ec: ExecutionContext): Future[Int] = {
   	//add event to table and apply to user. If event is already found, only apply to user
     val uids = db.run {
       (for {
@@ -176,6 +176,23 @@ class PetDBModel {
     }
   }
   
+  def viewEvent(username: String, message: String, db: Database) {
+    db.run {
+      val view =for {
+        u <- User
+        if u.username === username
+        e <- Event
+        if e.message === message
+        ue <- Userevent
+        if e.id === ue.notificationid
+        if u.id === ue.userid
+      } yield {
+        ue.viewed
+      }
+      view.update('T')
+    }
+  }
+  
   def getStats(username: String, db: Database)(implicit ec: ExecutionContext): Future[StatsRow] = {
   	val ids = db.run {
       (for {
@@ -190,6 +207,20 @@ class PetDBModel {
   	ids.flatMap { seq =>
   	  db.run(Stats.filter(_.petid === seq.head).sortBy(_.statdate.desc).result.head)
   	}
+  }
+  
+  def getMoney(username: String, db: Database)(implicit ec: ExecutionContext): Future[MoneyRow] = {
+    val ids = db.run {
+      (for {
+        u <- User
+        if u.username === username
+      } yield {
+        u.id
+      }).result
+    }
+    ids.flatMap { seq =>
+      db.run(Money.filter(_.userid === seq.head).sortBy(_.dateofmoney.desc).result.head)
+    }
   }
   
   def getNotif(username: String, db: Database)(implicit ec: ExecutionContext): Future[Seq[EventRow]] = {
