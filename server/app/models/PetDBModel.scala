@@ -9,7 +9,8 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext
 import Tables._
 
-class PetDBModel {
+@Singleton
+object PetDBModel {
   
   def getLogin(username: String, password: String, db: Database)(implicit ec: ExecutionContext): Future[Boolean] = {
     db.run {

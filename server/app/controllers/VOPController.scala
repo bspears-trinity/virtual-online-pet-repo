@@ -1,11 +1,17 @@
 package controllers
 
 import javax.inject._
-
-import edu.trinity.webapps.shared.SharedMessages
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
+import slick.jdbc.JdbcProfile
+import slick.jdbc.MySQLProfile.api._
+import play.api.db.slick.DatabaseConfigProvider
+import play.api.db.slick.HasDatabaseConfigProvider
+import scala.concurrent.ExecutionContext
+import scala.collection.mutable.ArrayBuffer
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
 
 case class LoginData(username: String, password: String)
 case class PasswordData(oldPassword: String, newPassword:String)
@@ -48,7 +54,7 @@ class VOPController @Inject()(protected val dbConfigProvider: DatabaseConfigProv
   }
   
   def shopView = Action.async { implicit request => {
-    Ok(views.html.shop())
+    Future.successful(Ok(views.html.shop(1)))
   }}
   
   def settingsView = Action {
@@ -59,10 +65,19 @@ class VOPController @Inject()(protected val dbConfigProvider: DatabaseConfigProv
     Ok(views.html.events())
   }
   
-  def petView = Action.async { implicit request => 
-    model.getStats(request.session.get("username"), db).map(statsRow => {
-      Redirect(views.html.pet(statsRow.hunger, statsRow.affection, statsRow.exhaustion))
-    })    
+  def petView = Action.async { implicit request =>
+    val postBody = request.body.asFormUrlEncoded
+    postBody.map { args =>
+      try {
+        val user = args("username").head.toString
+        val stats = models.PetDBModel.getStats(user, db)
+        stats.map { s =>
+          Ok(views.html.pet(s.hunger,s.affection,s.exhaustion))
+        }
+      } catch {
+        case ex: NumberFormatException => Future.successful(Redirect("login", 200))
+      }
+    }.getOrElse(Future.successful(Redirect("login", 200)))
   }
   
   //More involved actions that get form data and manipulate model before redirecting.
@@ -70,7 +85,7 @@ class VOPController @Inject()(protected val dbConfigProvider: DatabaseConfigProv
   def login = Action.async { implicit request =>
     //Gets user credentials from form, then verifies them through the database. If valid, starts a user session and directs to main page. Else, return to login page.
     loginForm.bindFromRequest.fold(
-      formWithErrors => BadRequest(views.html.login(formWithErrors)),
+      formWithErrors => Future.successful(BadRequest(views.html.login(formWithErrors))),
       credentials => {
         val isValid = models.PetDBModel.getLogin(credentials.username, credentials.password, db)
         isValid.map(valid => {
@@ -92,12 +107,17 @@ class VOPController @Inject()(protected val dbConfigProvider: DatabaseConfigProv
   def register = Action.async { implicit request =>
     //Update database with new user info through model, start session, and return choosing view.
     loginForm.bindFromRequest.fold(
-      formWithErrors => BadRequest(views.html.accountCreation(formWithErrors)),
+      formWithErrors => Future.successful(BadRequest(views.html.accountCreation(formWithErrors))),
       credentials => {
-        val addUser = models.PetDBModel.addUser(credentials.username, credentials.password, db)
-        addUser.map(result => {
-          //TODO: Use result to determine success. On failure, return to accountCreation view.
-          Redirect(routes.VOPController.chooseNewPetView).withSession("username" -> credentials.username)
+        val found = models.PetDBModel.findUser(credentials.username, db)
+        found.flatMap(b => if(!b) {
+          val addUser = models.PetDBModel.addUser(credentials.username, credentials.password, db)
+          Future.successful(Ok(views.html.login(loginForm)))
+          /*addUser.map(result => {
+            Ok(views.html.chooseYourPet())
+            //TODO: Use result to determine success. On failure, return to accountCreation view.
+            //Redirect(routes.VOPController.chooseNewPetView).withSession("username" -> credentials.username)
+          })*/
         })
       }
     )
