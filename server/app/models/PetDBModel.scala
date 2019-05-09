@@ -209,6 +209,20 @@ class PetDBModel {
   	}
   }
   
+  def getMoney(username: String, db: Database)(implicit ec: ExecutionContext): Future[MoneyRow] = {
+    val ids = db.run {
+      (for {
+        u <- User
+        if u.username === username
+      } yield {
+        u.id
+      }).result
+    }
+    ids.flatMap { seq =>
+      db.run(Money.filter(_.userid === seq.head).sortBy(_.dateofmoney.desc).result.head)
+    }
+  }
+  
   def getNotif(username: String, db: Database)(implicit ec: ExecutionContext): Future[Seq[EventRow]] = {
   	db.run {
   	  val allEvents = for {
