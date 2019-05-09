@@ -10,7 +10,7 @@ import scala.concurrent.ExecutionContext
 import Tables._
 
 class PetDBModel {
-  //def getList(username: String, db: Database)(implicit ec: ExecutionContext): Future[Seq[TasksRow]]
+  
   def getLogin(username: String, password: String, db: Database)(implicit ec: ExecutionContext): Future[Boolean] = {
     db.run {
       User.filter(u => u.username === username && u.password === password).exists.result
@@ -117,6 +117,43 @@ class PetDBModel {
       prev.flatMap { p =>
         db.run(Stats += StatsRow(0, p.head.id, p.head.affection+AffectionInc,p.head.hunger+HungerInc,
                                     p.head.exhaustion+ExhaustionInc, sqlDate))
+      }
+    }
+  }
+  
+  def newStats(username: String, db: Database)(implicit ec: ExecutionContext): Future[Int] = {
+  	val ids = db.run {
+      (for {
+        u <- User
+        if u.username === username
+        p <- Pet
+        if p.userid === u.id
+      } yield {
+        p.id
+      }).result
+    }
+    ids.flatMap { seq =>
+      val date = new java.util.Date()
+      val sqlDate = new java.sql.Date(date.getTime())
+      db.run(Stats += StatsRow(0, seq.head, 50, 0, 0, sqlDate))
+    }
+  }
+  
+  def updateMoney(username: String, MoneyInc: Int, db: Database)(implicit ec: ExecutionContext): Future[Int] = {
+  	val ids = db.run {
+      (for {
+        u <- User
+        if u.username === username
+      } yield {
+        u.id
+      }).result
+    }
+    ids.flatMap { seq =>
+      val date = new java.util.Date()
+      val sqlDate = new java.sql.Date(date.getTime())
+      val prev = db.run { Money.filter(_.userid === seq.head).sortBy(_.dateofmoney.desc).result }
+      prev.flatMap { p =>
+        db.run(Money += MoneyRow(0, p.head.id, p.head.money + MoneyInc, sqlDate))
       }
     }
   }
