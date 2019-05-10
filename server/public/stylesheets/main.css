@@ -1,9 +1,15 @@
+* {
+	font-family: "Times New Roman";
+	font-size: 18px;
+}
+
 body {
         background-color: beige;
 }
 
 h1 {
     font-family: "Times New Roman";
+    font-size:36px;
     margin: auto;
     width: 50%;
     padding: 10px;
@@ -14,6 +20,7 @@ h1 {
 
 h1 a {
 	font-family: "Times New Roman";
+	font-size:36px;
     width: 50%;
     text-align: center;
     text-decoration: none;
@@ -22,6 +29,7 @@ h1 a {
 
 h2 {
     font-family: "Times New Roman";
+    font-size:24px;
     margin: auto;
     width: 50%;
     text-align: center;
@@ -159,13 +167,40 @@ img {
 
 .events {
 	padding-top:50px;
-	padding-left:700px;
-	width:600px;
-	float:left;
+	padding-left:30%;
+	padding-right:30%;
+	align:center;
 }
 
 .events table {
-	border-spacing:15px;
+  border: 3px solid #000000;
+  background-color: #F5F5DC;
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+.events table td, .events table th {
+  border: 1px solid #000000;
+  padding: 5px 4px;
+}
+.events table tbody td {
+  font-size: 13px;
+}
+.events table thead {
+  background: #CFCFCF;
+  background: -moz-linear-gradient(top, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
+  background: -webkit-linear-gradient(top, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
+  background: linear-gradient(to bottom, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
+  border-bottom: 3px solid #000000;
+}
+.events table thead th {
+  font-size: 15px;
+  font-weight: bold;
+  color: #000000;
+  text-align: left;
+}
+.events table tfoot td {
+  font-size: 14px;
 }
 
 .settings {
@@ -174,10 +209,10 @@ img {
 	position:absolute;
 }
 
-.settings button {
-	
-}
-
 .settings #monster {
 	font-size: 2px;
+}
+
+#money {
+
 }

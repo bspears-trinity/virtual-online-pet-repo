@@ -70,16 +70,27 @@ class VOPController @Inject() (protected val dbConfigProvider: DatabaseConfigPro
     sessionCheck(request.session.get("username"), { Ok(views.html.settings()) })
   }
 
-  def eventsView = Action { implicit request =>
-    sessionCheck(request.session.get("username"), { Ok(views.html.events()) })
+  def eventsView = Action.async { implicit request =>
+    if (request.session.get("username").nonEmpty) {
+      val user = request.session.get("username").getOrElse("MissingNo")
+      val events = models.PetDBModel.getEvents(user, db)
+      events.flatMap { e =>
+        Future.successful(Ok(views.html.events(e.map{case (er,ue) => (ue.senddate.toString, er.message)})))
+      }
+    } else {
+      Future.successful(Ok(views.html.login()))
+    }
   }
 
   def petView = Action.async { implicit request =>
     if (request.session.get("username").nonEmpty) {
       val user = request.session.get("username").getOrElse("MissingNo")
       val stats = models.PetDBModel.getStats(user, db)
+      val pet = models.PetDBModel.getPet(user, db)
       stats.flatMap { s =>
-        Future.successful(Ok(views.html.pet(s.hunger, s.affection, s.exhaustion)))
+        pet.flatMap { p =>
+          Future.successful(Ok(views.html.pet(s.hunger, s.affection, s.exhaustion, p.name, p.icon)))
+        }
       }
     } else {
       Future.successful(Ok(views.html.login()))
