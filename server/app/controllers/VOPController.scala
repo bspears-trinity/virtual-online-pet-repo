@@ -111,7 +111,7 @@ class VOPController @Inject()(protected val dbConfigProvider: DatabaseConfigProv
       credentials => {
         val found = models.PetDBModel.findUser(credentials.username, db)
         found.flatMap(b => if(b) {
-    	    Future.successful(Ok(views.html.login(loginForm)))
+    	    Future.successful(Ok(views.html.accountCreation(loginForm)))
     	  } else {
     	    models.PetDBModel.addUser(credentials.username, credentials.password, db)
     	    Future.successful(Ok(views.html.login(loginForm)))
@@ -120,9 +120,20 @@ class VOPController @Inject()(protected val dbConfigProvider: DatabaseConfigProv
     )
   }
   
-  def changePassword = Action { implicit request => 
+  def changePassword = Action.async { implicit request => 
     //TODO: Verify old password and update database with new password, then return settings view
-    Ok(views.html.index("Password changed: redirect to settings view"))
+    changePasswordForm.bindFromRequest.fold(
+      formWithErrors => Future.successful(BadRequest(views.html.changePW(formWithErrors))),
+      passes => {
+        val user = request.session.get("username").getOrElse("MissingNo")
+        val changePass = models.PetDBModel.changePass(user, passes.oldPassword, passes.newPassword, db)
+        changePass.flatMap(c => {
+          Future.successful(Ok(views.html.map()))
+        })
+      }
+    )
+    
+    //Ok(views.html.index("Password changed: redirect to settings view"))
   }
   
   def newPet(petImg: Int) = Action.async { implicit request => 
