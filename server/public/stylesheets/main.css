@@ -144,6 +144,7 @@ img {
 	text-align: center;
 	text-decoration: none;
 	border: 5px solid #bed48c;
+	cursor:pointer;
 }
 
 #map11 {

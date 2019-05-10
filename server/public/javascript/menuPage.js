@@ -10,32 +10,41 @@
 
 $("#map11").click(function() {
 	$.get("/showPet")
+	displayNotifications();
 })
 
 $("#map12").click(function() {
 	$.get("/walkPet")
+	displayNotifications();
 })
 
 $("#map21").click(function() {
 	$.get("/groomPet")
+	displayNotifications();
 })
 
 $("#treatBuy").click(function() {
 	//200
 	$.get("/buyItem/1")
-	$("#money").text(parseInt($("#money").text) - 200)
+	const currentMoney = parseInt($("#money").text().replace("$",""))
+	$("#money").text("$" + (currentMoney <= 0 ? 0 : currentMoney - 200).toString())
+	displayNotifications();
 })
 
 $("#blankyBuy").click(function() {
 	//300
 	$.get("/buyItem/2")
-	$("#money").text(parseInt($("#money").text) - 300)
+	const currentMoney = parseInt($("#money").text().replace("$",""))
+	$("#money").text("$" + (currentMoney <= 0 ? 0 : currentMoney - 300).toString())
+	displayNotifications();
 })
 
 $("#foodBuy").click(function() {
 	//100
 	$.get("/buyItem/0")
-	$("#money").text(parseInt($("#money").text) - 100)
+	const currentMoney = parseInt($("#money").text().replace("$",""))
+	$("#money").text("$" + (currentMoney <= 0 ? 0 : currentMoney - 100).toString())
+	displayNotifications();
 })
 
 function updateEvents() {
@@ -51,5 +60,7 @@ function displayNotifications() {
 	}, "text")
 }
 
-setInterval(updateEvents(),300000);
-setInterval(displayNotifications(), 10000)
+
+displayNotifications();
+setInterval(updateEvents,300000);
+setInterval(displayNotifications, 10000);

@@ -329,7 +329,8 @@ class VOPController @Inject() (protected val dbConfigProvider: DatabaseConfigPro
       val user = request.session.get("username").getOrElse("MissingNo")
       val newnotes = models.PetDBModel.getNotif(user, db)
       newnotes.flatMap(events => {
-        //models.PetDBModel.viewEvent(user, db)
+        //println("viewed");
+        models.PetDBModel.viewEvent(user, db)
         val notesString = events.map(e => e.message).mkString(";")
         Future.successful(Ok(notesString))
       })

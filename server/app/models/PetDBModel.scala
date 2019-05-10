@@ -202,16 +202,17 @@ object PetDBModel {
   }
   
   def viewEvent(username: String, db: Database)(implicit ec: ExecutionContext): Future[Int] =  {
-    db.run {
-      val view =for {
+    val uids = db.run {
+      (for {
         u <- User
         if u.username === username
-        ue <- Userevent
-        if u.id === ue.userid
       } yield {
-        ue.viewed
-      }
-      view.update('T')
+        u.id
+      }).result
+    }
+    
+    uids.flatMap { useq =>
+      db.run(Userevent.filter(_.userid === useq.head).map(_.viewed).update('T'))
     }
   }
   
