@@ -1,0 +1,238 @@
+* {
+	font-family: "Times New Roman";
+	font-size: 18px;
+}
+
+body {
+        background-color: beige;
+}
+
+h1 {
+    font-family: "Times New Roman";
+    font-size:36px;
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+}
+
+h1 a {
+	font-family: "Times New Roman";
+	font-size:36px;
+    width: 50%;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+}
+
+h2 {
+    font-family: "Times New Roman";
+    font-size:24px;
+    margin: auto;
+    width: 50%;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+}
+
+p {
+    margin: auto;
+    width: 50%;
+    text-align: center;
+    padding: 10px;
+}
+
+.pet {
+  margin: 15px;
+  float: center;
+  padding: 5px;
+}
+
+img {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.loginform {
+    padding: 50px;
+    text-align: center;
+}
+
+.menu li {
+	display: inline;
+}
+
+.menu li a {
+	display: inline-block;
+	color: white;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+.menu li a:hover {
+	background-color: #111;
+}
+
+.active {
+	background-color: #555;
+}
+
+.menu {
+	text-align: center;
+	align: center;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #333;
+}
+
+.alert {
+	top: 150px;
+	right: 25px;
+	position: absolute;
+	width: 300px;
+}
+
+.alert ul {
+	align: justify;
+}
+
+.alert ul li {
+	text-align: justify;
+	margin: 5px 0;
+	display: block;
+	background-color: #888;
+}
+
+.alert ul li:hover {
+	background-color: #999;
+}
+
+.pic {
+	padding-top: 50px;
+	padding-left: 150px;
+	width: 300px;
+	float:left;
+}
+
+.info {
+	width: 250px;
+	padding-top:50px;
+	padding-left:150px;
+	float:left;
+}
+
+.info ul {
+	align: center;
+}
+
+.map {
+	size:1000px
+	background-image: url(https://cdn.dribbble.com/users/59947/screenshots/3152030/cape_town_map_final_02.jpg);
+}
+
+.map a{
+	font-size: 30px;
+	background-color: #111;
+	padding: 20px 30px;
+	display: block;
+	color: white;
+	text-align: center;
+	text-decoration: none;
+	border: 5px solid #bed48c;
+	cursor:pointer;
+}
+
+#map11 {
+	top:300px;
+	left:300px;
+	position:absolute;
+}
+
+#map12 {
+	top:300px;
+	right:300px;
+	position:absolute;
+}
+
+#map21 {
+	bottom:300px;
+	left:300px;
+	position:absolute;
+}
+
+#map22 {
+	bottom:300px;
+	right:300px;	border-spacing: 30px;
+	
+	position:absolute;
+}
+
+.events {
+	padding-top:50px;
+	padding-left:30%;
+	padding-right:30%;
+	align:center;
+}
+
+.events table {
+  border: 3px solid #000000;
+  background-color: #F5F5DC;
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+.events table td, .events table th {
+  border: 1px solid #000000;
+  padding: 5px 4px;
+}
+.events table tbody td {
+  font-size: 13px;
+}
+.events table thead {
+  background: #CFCFCF;
+  background: -moz-linear-gradient(top, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
+  background: -webkit-linear-gradient(top, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
+  background: linear-gradient(to bottom, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
+  border-bottom: 3px solid #000000;
+}
+.events table thead th {
+  font-size: 15px;
+  font-weight: bold;
+  color: #000000;
+  text-align: left;
+}
+.events table tfoot td {
+  font-size: 14px;
+}
+
+.settings {
+	padding-top:50px;
+	left:45%;
+	position:absolute;
+}
+
+.settings #monster {
+	font-size: 2px;
+}
+
+#map {
+	width: 100%;
+	height: 100%;
+	margin: auto;
+	display: block;
+	background-image: url(https://cdn.dribbble.com/users/59947/screenshots/3152030/cape_town_map_final_02.jpg);
+	background-size:cover;
+}
+
+#notif {
+	background-color: white;
+}
+
+#money {
+
+}

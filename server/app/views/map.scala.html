@@ -1,0 +1,33 @@
+@* mainPage Template File *@
+@()
+
+@main("Virtual Pet") {
+
+
+	<center>
+		<h2>Main Page</h2>
+		<ul class="menu">
+			<li><a class="active" href="@routes.VOPController.mainView">Main</a></li>
+			<li><a href="@routes.VOPController.eventsView">Events</a></li>
+			<li><a href="@routes.VOPController.petView">Pet</a></li>
+			<li><a href="@routes.VOPController.settingsView">Settings</a></li>
+			<li><a href="@routes.VOPController.logout">Log out</a></li>
+		</ul>
+	</center>
+	
+	<div>
+		<div class="map">
+			<canvas id = "map"></canvas>
+			<a id="map11">Show Off Your Pet</a>
+			<a id="map12">Walk Your Pet</a>
+			<a id="map21">Groom Your Pet</a>
+			<a id="map22" href="@routes.VOPController.shopView">Shop</a>
+		</div>
+		<div class="alert">
+			<center id="notif">Notifications</center>
+			<ul id="notifList"/>
+		</div>
+	</div>
+
+<script src="@routes.Assets.versioned("javascript/menuPage.js")"></script>
+}

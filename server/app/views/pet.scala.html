@@ -1,0 +1,58 @@
+@* petPage Template File *@
+@(hunger:Int, affection:Int, exhaustion:Int, petName:String, imageIndex:Int)
+
+@main("Virtual Pet") {
+
+<head>
+	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+</head>
+
+<center>
+	<h2>Pet Page</h2>
+	<ul class="menu">
+		<li><a href="@routes.VOPController.mainView">Main</a></li>
+		<li><a href="@routes.VOPController.eventsView">Events</a></li>
+		<li><a class="active" href="@routes.VOPController.petView">Pet</a></li>
+		<li><a href="@routes.VOPController.settingsView">Settings</a></li>
+		<li><a href="@routes.VOPController.logout">Log out</a></li>
+	</ul>
+</center>
+
+<div>
+	<div class="pic">
+		<h2 id="name">@petName</h2>
+		@if(imageIndex==0) {
+			<img src="https://www.publicdomainpictures.net/pictures/220000/velka/chien-chiot-golden-retriever.jpg" width=200 height=200>
+		}
+		@if(imageIndex==1) {
+			<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/June_odd-eyed-cat_cropped.jpg/300px-June_odd-eyed-cat_cropped.jpg" width=200 height=200>
+		}
+		@if(imageIndex==2) {
+			<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Ferret_2008.png/800px-Ferret_2008.png" width=200 height=200>
+		}
+		@if(imageIndex==3) {
+			<img src="https://www.publicdomainpictures.net/pictures/290000/velka/elephant-15529503890Da.jpg" width=200 height=200>
+		}
+		@if(imageIndex==4) {
+			<img src="https://c.pxhere.com/photos/00/95/orca_san_diego_sea_world-645775.jpg!d" width=200 height=200>
+		}
+		@if(imageIndex==5) {
+			<img src="https://www.goodfreephotos.com/albums/vector-images/grey-stone-rock-vector-clipart.png" width=200 height=200>
+		}
+	</div>
+	<div class="info">
+		<center>Status</center>
+		<ul>
+			<li id="hunger">Hunger: @hunger/100</li>
+			<li id="affection">Affection: @affection/100</li>
+			<li id="exhaustion">Exhaustion: @exhaustion/100</li>
+		</ul>
+	</div>
+	<div class="alert">
+		<center>Notifications</center>
+		<ul id="notifList"/>
+	</div>
+</div>
+
+<script src="@routes.Assets.versioned("javascript/menuPage.js")"></script>
+}

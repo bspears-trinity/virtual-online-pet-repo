@@ -1,0 +1,57 @@
+@* shop Template File *@
+@(money:Int)
+
+@main("Virtual Pet") {
+
+<head>
+	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+</head>
+
+<center>
+	<h2>Shop</h2>
+	<ul class="menu">
+		<li><a href="@routes.VOPController.mainView">Main</a></li>
+		<li><a href="@routes.VOPController.eventsView">Events</a></li>
+		<li><a href="@routes.VOPController.petView">Pet</a></li>
+		<li><a href="@routes.VOPController.settingsView">Settings</a></li>
+		<li><a href="@routes.VOPController.logout">Log out</a></li>
+	</ul>
+</center>
+
+<div id="money">$@money</div>
+
+<div>
+	<div class="pic">
+		<img src="http://earthporm.com/wp-content/uploads/2014/08/dog-shopkeeper-5.jpg" height=200 width=200>
+	</div>
+	<div class="info">
+		<center>Stock</center>
+		<ul>
+			<li>
+				Treat $200
+				<form @*action="" type="get"*@>
+					<input type="button" value="Buy" id="treatBuy"></input>
+				</form>
+			</li>
+			<li>
+				Food $100
+				<form @*action="" type="get"*@>
+					<input type="button" value="Buy" id="foodBuy"></input>
+				</form>
+			</li>
+			<li>
+				Blanky $300
+				<form @*action="" type="get"*@>
+					<input type="button" value="Buy" id="blankyBuy"></input>
+				</form>
+			</li>
+		</ul>
+	</div>
+	<div class="alert">
+		<center>Notifications</center>
+		<ul id="notifList"/>
+	</div>
+</div>
+
+<script src="@routes.Assets.versioned("javascript/menuPage.js")"></script>
+}

@@ -1,0 +1,42 @@
+@* events Template File *@
+@(events:Seq[(String,String)])
+
+@main("Virtual Pet") {
+
+<center>
+	<h2>Events</h2>
+	<ul class="menu">
+		<li><a href="@routes.VOPController.mainView">Main</a></li>
+		<li><a class="active" href="@routes.VOPController.eventsView">Events</a></li>
+		<li><a href="@routes.VOPController.petView">Pet</a></li>
+		<li><a href="@routes.VOPController.settingsView">Settings</a></li>
+		<li><a href="@routes.VOPController.logout">Log out</a></li>
+	</ul>
+</center>
+
+<div class="events">
+	<table>
+		<thead>
+		<tr>
+			<th>Date</th>
+			<th>Info</th>
+		</tr>
+		</thead>
+		<tbody>
+			@for(e <- events.reverse) {
+				<tr>
+					<td>@e._1</td>
+					<td>@e._2</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
+
+<div class="alert">
+	<center>Notifications</center>
+	<ul id="notifList"/>
+</div>
+
+<script src="@routes.Assets.versioned("javascript/menuPage.js")"></script>
+}

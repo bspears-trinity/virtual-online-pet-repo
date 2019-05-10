@@ -1,0 +1,32 @@
+@* chooseYourPet Template File *@
+@()(implicit request: MessagesRequestHeader, flash:Flash)
+
+
+@main("choosepet") {
+    
+    <h1><a href="@routes.VOPController.loginView">Virtual Online Pet</a></h1>
+    <div></div>
+    <h2>Choose a Pet!</h2>    
+    
+<center>
+	
+	<form action=@routes.VOPController.newPet method="post">
+		<div>
+			@helper.CSRF.formField
+			<input id="petName" name="name" type="text" value="Name" required></input>
+		
+		</div>    
+    	<div class="pet">
+    		<input type="image" name="pic" value=0 src="https://www.publicdomainpictures.net/pictures/220000/velka/chien-chiot-golden-retriever.jpg" alt="Submit" width=200 height=200>   
+    		<input type="image" name="pic" value=1 src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/June_odd-eyed-cat_cropped.jpg/300px-June_odd-eyed-cat_cropped.jpg" width=200 height=200>
+    		<input type="image" name="pic" value=2 src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Ferret_2008.png/800px-Ferret_2008.png" width=200 height=200>
+    	</div>    
+    
+    	<div class="pet">
+    		<input type="image" name="pic" value=3 src="https://www.publicdomainpictures.net/pictures/290000/velka/elephant-15529503890Da.jpg" width=200 height=200>
+    		<input type="image" name="pic" value=4 src="https://c.pxhere.com/photos/00/95/orca_san_diego_sea_world-645775.jpg!d" width=200 height=200>
+    		<input type="image" name="pic" value=5 src="https://www.goodfreephotos.com/albums/vector-images/grey-stone-rock-vector-clipart.png" width=200 height=200>
+    	</div>
+    </form>
+</center>
+}

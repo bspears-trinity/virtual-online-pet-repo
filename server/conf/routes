@@ -2,8 +2,39 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Home page
-GET        /                             edu.trinity.webapps.controllers.Application.index
+# VOP Routes
+# Simple get routes to load views
+GET        /                             controllers.VOPController.loginView
+GET        /loginView                    controllers.VOPController.loginView
+GET        /registerView                 controllers.VOPController.registerView
+GET        /changePasswordView           controllers.VOPController.changePasswordView
+GET        /chooseNewPetView             controllers.VOPController.chooseNewPetView
+GET        /mainView                     controllers.VOPController.mainView
+GET        /shopView                     controllers.VOPController.shopView
+GET        /settingsView                 controllers.VOPController.settingsView
+GET        /eventsView                   controllers.VOPController.eventsView
+GET        /petView                      controllers.VOPController.petView
+
+# More involved routes for when user takes an action that alters the model
+# User/pet info changes
+POST       /login                        controllers.VOPController.login
+GET        /logout                       controllers.VOPController.logout
+POST       /register                     controllers.VOPController.register
+POST       /changePassword               controllers.VOPController.changePassword
+
+POST       /newPet                       controllers.VOPController.newPet
+GET        /abandonPet                   controllers.VOPController.abandonPet
+# Main view actions
+GET        /walkPet                      controllers.VOPController.walkPet
+GET        /groomPet                     controllers.VOPController.groomPet
+GET        /showPet                      controllers.VOPController.showPet
+# Shop view actions
+GET        /buyItem/:itemID              controllers.VOPController.buyItem(itemID: Int)
+
+# Routes for handling events
+# Route called on an interval by javascript on logged-in views.
+GET        /updateEvent                  controllers.VOPController.updateEvent
+GET        /newNotifications             controllers.VOPController.newNotifications
 
 # Prefix must match `play.assets.urlPrefix`
 GET        /assets/*file                 controllers.Assets.at(file)
