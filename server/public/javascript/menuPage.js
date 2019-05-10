@@ -23,24 +23,25 @@ $("#map21").click(function() {
 
 $("#treatBuy").click(function() {
 	//200
-	$.get("/buyItem/:1")
+	$.get("/buyItem/1")
 })
 
 $("#blankyBuy").click(function() {
 	//300
-	$.get("/buyItem/:2")
+	$.get("/buyItem/2")
 })
 
 $("#foodBuy").click(function() {
 	//100
-	$.get("/buyItem/:0")
+	$.get("/buyItem/0")
 })
 
 $("#changePW").click(function() {
-	$.get("/changePassword")
+	$.get("/changePasswordView")
 })
 
 $("#abandonPet").click(function() {
+	alert("clicked");
 	$.get("/abandonPet")
 })
 
