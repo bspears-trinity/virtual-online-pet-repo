@@ -84,7 +84,7 @@ object PetDBModel {
     }
   }
   
-  def removePet(username: String, petName: String, Icon: Int, db: Database)(implicit ec: ExecutionContext): Future[Int] = {
+  def removePet(username: String, db: Database)(implicit ec: ExecutionContext): Future[Int] = {
   	val ids = db.run {
       (for {
         u <- User
@@ -116,8 +116,16 @@ object PetDBModel {
       val sqlDate = new java.sql.Date(date.getTime())
       val prev = db.run { Stats.filter(_.petid === seq.head).sortBy(_.statdate.desc).result }
       prev.flatMap { p =>
-        db.run(Stats += StatsRow(0, p.head.id, p.head.affection+AffectionInc,p.head.hunger+HungerInc,
-                                    p.head.exhaustion+ExhaustionInc, sqlDate))
+        var aff = p.head.affection+AffectionInc
+        if(aff < 0) aff = 0
+        if(aff > 100) aff = 100
+        var hung = p.head.hunger+HungerInc
+        if(hung < 0) hung = 0
+        if(hung > 100) hung = 100
+        var exh = p.head.exhaustion+ExhaustionInc
+        if(exh < 0) exh = 0
+        if(exh > 100) exh = 100
+        db.run(Stats += StatsRow(0, p.head.id, aff,hung, exh, sqlDate))
       }
     }
   }
@@ -224,6 +232,10 @@ object PetDBModel {
     }
   }
   
+  def getEvent(eventID: Int, db: Database)(implicit ec: ExecutionContext): Future[EventRow] = {
+    db.run(Event.filter(_.id === eventID).result.head)
+  }
+  
   def getNotif(username: String, db: Database)(implicit ec: ExecutionContext): Future[Seq[EventRow]] = {
   	db.run {
   	  val allEvents = for {
@@ -231,6 +243,7 @@ object PetDBModel {
   	    if u.username === username
   	    ue <- Userevent
   	    if ue.userid === u.id
+  	    if ue.viewed === 'F'
   	    e <- Event
   	    if ue.notificationid === e.id
   	  } yield {
@@ -240,7 +253,7 @@ object PetDBModel {
   	}
   }
   
-  def getLastVist(username: String, db: Database)(implicit ec: ExecutionContext): Future[UserdateRow] = {
+  def getLastVisit(username: String, db: Database)(implicit ec: ExecutionContext): Future[UserdateRow] = {
   	db.run {
       (for {
         u <- User

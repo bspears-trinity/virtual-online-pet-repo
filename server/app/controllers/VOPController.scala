@@ -69,7 +69,7 @@ class VOPController @Inject()(protected val dbConfigProvider: DatabaseConfigProv
     val postBody = request.body.asFormUrlEncoded
     postBody.map { args =>
       try {
-        val user = args("username").head.toString
+        val user = request.session.get("username").getOrElse("MissingNo")
         val stats = models.PetDBModel.getStats(user, db)
         stats.map { s =>
           Ok(views.html.pet(s.hunger,s.affection,s.exhaustion))
@@ -110,15 +110,12 @@ class VOPController @Inject()(protected val dbConfigProvider: DatabaseConfigProv
       formWithErrors => Future.successful(BadRequest(views.html.accountCreation(formWithErrors))),
       credentials => {
         val found = models.PetDBModel.findUser(credentials.username, db)
-        found.flatMap(b => if(!b) {
-          val addUser = models.PetDBModel.addUser(credentials.username, credentials.password, db)
-          Future.successful(Ok(views.html.login(loginForm)))
-          /*addUser.map(result => {
-            Ok(views.html.chooseYourPet())
-            //TODO: Use result to determine success. On failure, return to accountCreation view.
-            //Redirect(routes.VOPController.chooseNewPetView).withSession("username" -> credentials.username)
-          })*/
-        })
+        found.flatMap(b => if(b) {
+    	    Future.successful(Ok(views.html.login(loginForm)))
+    	  } else {
+    	    models.PetDBModel.addUser(credentials.username, credentials.password, db)
+    	    Future.successful(Ok(views.html.login(loginForm)))
+    	  })
       }
     )
   }
@@ -128,53 +125,150 @@ class VOPController @Inject()(protected val dbConfigProvider: DatabaseConfigProv
     Ok(views.html.index("Password changed: redirect to settings view"))
   }
   
-  def deleteUser = Action { implicit request =>
-    //TODO: Clear user info from database, end session, and return login view
-    Ok(views.html.login()).withNewSession
+  def newPet(petImg: Int) = Action.async { implicit request => 
+    val postBody = request.body.asFormUrlEncoded
+    postBody.map { args =>
+      try {
+        val user = request.session.get("username").getOrElse("MissingNo")
+        val pet = args("petName").head.toString
+        val addpet = models.PetDBModel.addPet(user, pet, petImg, db)
+        addpet.flatMap { s =>
+          models.PetDBModel.newStats(user, db).flatMap { g =>
+            Future.successful(Ok(views.html.map()))
+          }
+        }
+      } catch {
+        case ex: NumberFormatException => Future.successful(Redirect("login", 200))
+      }
+    }.getOrElse(Future.successful(Redirect("login", 200)))
   }
   
-  def newPet(petImg: Int) = Action { implicit request => 
-    //TODO: Get form data on new pet and add to database through model.
-    Ok(views.html.map())
-  }
-  
-  def abandonPet = Action { implicit request => 
+  def abandonPet = Action.async { implicit request => 
     //TODO: Clear pet info from database.
-    Ok(views.html.chooseYourPet())
+    val user = request.session.get("username").getOrElse("MissingNo")
+    val gonepet = models.PetDBModel.removePet(user, db)
+    gonepet.flatMap { g =>
+      Future.successful(Ok(views.html.chooseYourPet()))
+    }
   }
   
-  def walkPet = Action { implicit request =>
+  def walkPet = Action.async { implicit request =>
     //TODO: Check if walk is possible with params. If so, apply walk event to model, then update database. 
     //TODO: Call this route from main js file and display appropriate notification/graphic with JQuery.
-    Ok("Pet walked")
+    val user = request.session.get("username").getOrElse("MissingNo")
+    val walk = models.PetDBModel.addEvent(user, 10, db)
+    val Event = models.PetDBModel.getEvent(10, db)
+    Event.map { e =>
+      models.PetDBModel.updateStats(user, e.affectioninc, e.hungerinc, e.exhaustioninc, db)
+      models.PetDBModel.updateMoney(user, e.moneyinc, db)
+      Ok("Pet walked")
+    }
   }
   
-  def showPet = Action { implicit request =>
+  def showPet = Action.async { implicit request =>
     //TODO: Check if show is possible with params. If so, apply show event to model, then update database. 
     //TODO: Call this route from main js file and display appropriate notification/graphic with JQuery.
-    Ok("Pet shown")
+    val user = request.session.get("username").getOrElse("MissingNo")
+    val walk = models.PetDBModel.addEvent(user, 11, db)
+    val Event = models.PetDBModel.getEvent(11, db)
+    Event.map { e =>
+      models.PetDBModel.updateStats(user, e.affectioninc, e.hungerinc, e.exhaustioninc, db)
+      models.PetDBModel.updateMoney(user, e.moneyinc, db)
+      Ok("Pet shown")
+    }
   }
   
-  def groomPet = Action { implicit request =>
+  def groomPet = Action.async { implicit request =>
     //TODO: Check if groom is possible with params. If so, apply groom event to model, then update database. 
     //TODO: Call this route from main js file and display appropriate notification/graphic with JQuery.
-    Ok("Pet groomed")
+    val user = request.session.get("username").getOrElse("MissingNo")
+    val walk = models.PetDBModel.addEvent(user, 9, db)
+    val Event = models.PetDBModel.getEvent(9, db)
+    Event.map { e =>
+      models.PetDBModel.updateStats(user, e.affectioninc, e.hungerinc, e.exhaustioninc, db)
+      models.PetDBModel.updateMoney(user, e.moneyinc, db)
+      Ok("Pet groomed")
+    }
   }
   
-  def buyItem(itemID: Int) = Action { implicit request =>
-    //TODO: Check if buy is possible with current money. If so, update parameters, then update database.
+  def buyItem(itemID: Int) = Action.async { implicit request =>
+    //Check if buy is possible with current money. If so, update parameters, then update database.
     //TODO: Use JQuery to update money label
-    Ok("Item bought")
+    val user = request.session.get("username").getOrElse("MissingNo")
+    val walk = models.PetDBModel.addEvent(user, itemID+6, db)
+    val Event = models.PetDBModel.getEvent(itemID+6, db)
+    Event.flatMap { e =>
+      val mon = models.PetDBModel.getMoney(user, db)
+      mon.flatMap(m => {
+        if(m.money + e.moneyinc > 0) {
+          models.PetDBModel.updateStats(user, e.affectioninc, e.hungerinc, e.exhaustioninc, db)
+          models.PetDBModel.updateMoney(user, e.moneyinc, db)
+          Future.successful(Ok("Item bought"))
+        } else {
+          Future.successful(Ok("Not enough money"))
+        }
+      })
+    }
   }
   
-  def updateEvent = Action { implicit request => 
-    //TODO: Check current time. Get last update time from model. Generate and apply events based on time passed. Update last update time. Update database.
-    Ok("Event updated")
+  def updateEvent = Action.async { implicit request => 
+    //Check current time. Get last update time from model. Generate and apply events based on time passed. Update last update time. Update database.
+    val user = request.session.get("username").getOrElse("MissingNo")
+    val lastvisit = models.PetDBModel.getLastVisit(user, db)
+    lastvisit.flatMap { l =>
+      val date = new java.util.Date()
+      val sqlDate = new java.sql.Date(date.getTime())
+      if(l.updatelast.getOrElse(sqlDate).getMinutes < sqlDate.getMinutes - 5) {
+        val r = math.random()
+        if(r < 0.2) {
+          val walk = models.PetDBModel.addEvent(user, 1, db)
+          val Event = models.PetDBModel.getEvent(1, db)
+          Event.map { e =>
+            models.PetDBModel.updateStats(user, e.affectioninc, e.hungerinc, e.exhaustioninc, db)
+            models.PetDBModel.updateMoney(user, e.moneyinc, db)
+          }
+        } else if (r < 0.3) {
+          val walk = models.PetDBModel.addEvent(user, 2, db)
+          val Event = models.PetDBModel.getEvent(2, db)
+          Event.map { e =>
+            models.PetDBModel.updateStats(user, e.affectioninc, e.hungerinc, e.exhaustioninc, db)
+            models.PetDBModel.updateMoney(user, e.moneyinc, db)
+          }
+        } else if (r < 0.5) {
+          val walk = models.PetDBModel.addEvent(user, 3, db)
+          val Event = models.PetDBModel.getEvent(3, db)
+          Event.map { e =>
+            models.PetDBModel.updateStats(user, e.affectioninc, e.hungerinc, e.exhaustioninc, db)
+            models.PetDBModel.updateMoney(user, e.moneyinc, db)
+          }
+        } else if (r < 0.6) {
+          val walk = models.PetDBModel.addEvent(user, 4, db)
+          val Event = models.PetDBModel.getEvent(4, db)
+          Event.map { e =>
+            models.PetDBModel.updateStats(user, e.affectioninc, e.hungerinc, e.exhaustioninc, db)
+            models.PetDBModel.updateMoney(user, e.moneyinc, db)
+          }
+        } else {
+          val walk = models.PetDBModel.addEvent(user, 5, db)
+          val Event = models.PetDBModel.getEvent(5, db)
+          Event.map { e =>
+            models.PetDBModel.updateStats(user, e.affectioninc, e.hungerinc, e.exhaustioninc, db)
+            models.PetDBModel.updateMoney(user, e.moneyinc, db)
+          }
+        }
+        models.PetDBModel.addVisit(user, db)
+        Future.successful(Ok("Added event"))
+      } else {
+        Future.successful(Ok("No new event"))
+      }
+    }
   }
 
-  def newNotifications = Action { implicit request =>
+  def newNotifications = Action.async { implicit request =>
     //TODO: Check user's notifications for any that need to be displayed. Return new notifications and update database to show that they have been displayed.
-    Ok("New Notifications returned")
+    val user = request.session.get("username").getOrElse("MissingNo")
+    val newnotes = models.PetDBModel.getNotif(user, db)
+    Future.successful(Ok("New Notifications returned"))
   }
 }
 
