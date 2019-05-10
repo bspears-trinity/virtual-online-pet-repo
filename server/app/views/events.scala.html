@@ -1,5 +1,5 @@
 @* events Template File *@
-@()
+@(events:Seq[(String,String)])
 
 @main("Virtual Pet") {
 
@@ -20,18 +20,20 @@
 
 <div class="events">
 	<table>
+		<thead>
 		<tr>
-			<td>Date</td>
-			<td>Info</td>
+			<th>Date</th>
+			<th>Info</th>
 		</tr>
-		<tr>
-			<td>8/30/18</td>
-			<td>Ur pet sad</td>
-		</tr>
-		<tr>
-			<td>3/21/19</td>
-			<td>Ur pet ded</td>
-		</tr>
+		</thead>
+		<tbody>
+			@for(e <- events) {
+				<tr>
+					<td>@e._1</td>
+					<td>@e._2</td>
+				</tr>
+			}
+		</tbody>
 	</table>
 </div>
 

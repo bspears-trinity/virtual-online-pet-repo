@@ -269,6 +269,22 @@ object PetDBModel {
   	}
   }
   
+  def getEvents(username: String, db: Database)(implicit ec: ExecutionContext): Future[Seq[(EventRow,UsereventRow)]] = {
+  	db.run {
+  	  val allEvents = for {
+  	    u <- User
+  	    if u.username === username
+  	    ue <- Userevent
+  	    if ue.userid === u.id
+  	    e <- Event
+  	    if ue.notificationid === e.id
+  	  } yield {
+  	    (e,ue)
+  	  }
+  	  allEvents.result
+  	}
+  }
+  
   def getLastVisit(username: String, db: Database)(implicit ec: ExecutionContext): Future[UserdateRow] = {
   	db.run {
       (for {

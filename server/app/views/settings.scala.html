@@ -19,10 +19,15 @@
 </center>
 
 <div class="settings">
-	<button type="button" id="changePW">Change Password</button> @* need javascript to make these function *@
+	<form action="@routes.VOPController.changePasswordView" type="get">
+		<input type="submit" value="Change Password" ></input>
+	</form>
 	</br>
 	</br>
-	<button type="button" id="abandonPet">Abandon Pet</button><text id="monster">you monster</text>
+	<form action="@routes.VOPController.abandonPet" type="get">
+		<input type="submit" value="Abandon Pet" ></input>
+	</form>
+	<text id="monster">you monster</text>
 </div>
 
 <div class="alert">

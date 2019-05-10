@@ -9,7 +9,6 @@
 }*/
 
 $("#map11").click(function() {
-	alert("clicked");
 	$.get("/showPet")
 })
 
@@ -34,15 +33,6 @@ $("#blankyBuy").click(function() {
 $("#foodBuy").click(function() {
 	//100
 	$.get("/buyItem/0")
-})
-
-$("#changePW").click(function() {
-	$.get("/changePasswordView")
-})
-
-$("#abandonPet").click(function() {
-	alert("clicked");
-	$.get("/abandonPet")
 })
 
 //shop buy

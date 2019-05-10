@@ -1,5 +1,5 @@
 @* petPage Template File *@
-@(hunger:Int, affection:Int, exhaustion:Int)
+@(hunger:Int, affection:Int, exhaustion:Int, petName:String, imageIndex:Int)
 
 @main("Virtual Pet") {
 
@@ -20,15 +20,32 @@
 
 <div>
 	<div class="pic">
-		<h2 id="name">Rocky</h2>
-		<img src="https://www.goodfreephotos.com/albums/vector-images/grey-stone-rock-vector-clipart.png" width=200 height=200>
+		<h2 id="name">@petName</h2>
+		@if(imageIndex==0) {
+			<img src="https://www.publicdomainpictures.net/pictures/220000/velka/chien-chiot-golden-retriever.jpg" width=200 height=200>
+		}
+		@if(imageIndex==1) {
+			<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/June_odd-eyed-cat_cropped.jpg/300px-June_odd-eyed-cat_cropped.jpg" width=200 height=200>
+		}
+		@if(imageIndex==2) {
+			<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Ferret_2008.png/800px-Ferret_2008.png" width=200 height=200>
+		}
+		@if(imageIndex==3) {
+			<img src="https://www.publicdomainpictures.net/pictures/290000/velka/elephant-15529503890Da.jpg" width=200 height=200>
+		}
+		@if(imageIndex==4) {
+			<img src="https://c.pxhere.com/photos/00/95/orca_san_diego_sea_world-645775.jpg!d" width=200 height=200>
+		}
+		@if(imageIndex==5) {
+			<img src="https://www.goodfreephotos.com/albums/vector-images/grey-stone-rock-vector-clipart.png" width=200 height=200>
+		}
 	</div>
 	<div class="info">
 		<center>Status</center>
 		<ul>
-			<li id="hunger">Hunger: @hunger/10</li>
-			<li id="affection">Affection: @affection/10</li>
-			<li id="exhaustion">Exhaustion: @exhaustion/10</li>
+			<li id="hunger">Hunger: @hunger/100</li>
+			<li id="affection">Affection: @affection/100</li>
+			<li id="exhaustion">Exhaustion: @exhaustion/100</li>
 		</ul>
 	</div>
 	<div class="alert">
