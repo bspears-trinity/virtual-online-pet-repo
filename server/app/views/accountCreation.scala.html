@@ -8,10 +8,15 @@
     <div></div>
     
     <div class="loginform">
-    <form action="@routes.VOPController.chooseNewPetView" method="get"> @* hard coded to chooseyourpet atm *@
-        <input type="text" name="Username"></input>
-        <input type="text" name="Password"></input>
-        <input type="submit" name="Register"></input>
+    <form action="@routes.VOPController.register" method="post">
+     @helper.CSRF.formField
+        Username:<br>
+        <input type="text" name="username" required></input>
+        <br>
+        Password:<br>
+        <input type="text" name="password" required></input>
+        <br>
+        <input type="submit" name="Register" value="Register"></input>
     </form>
     </div>
 }

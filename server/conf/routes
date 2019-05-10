@@ -21,7 +21,8 @@ POST       /login                        controllers.VOPController.login
 GET        /logout                       controllers.VOPController.logout
 POST       /register                     controllers.VOPController.register
 POST       /changePassword               controllers.VOPController.changePassword
-GET        /newPet/:petImg               controllers.VOPController.newPet(petImg: Int)
+
+POST       /newPet                       controllers.VOPController.newPet
 GET        /abandonPet                   controllers.VOPController.abandonPet
 # Main view actions
 GET        /walkPet                      controllers.VOPController.walkPet
