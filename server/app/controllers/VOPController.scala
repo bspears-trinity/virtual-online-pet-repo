@@ -71,9 +71,7 @@ class VOPController @Inject() (protected val dbConfigProvider: DatabaseConfigPro
   }
 
   def eventsView = Action { implicit request =>
-    {
-      sessionCheck(request.session.get("username"), { Ok(views.html.events()) })
-    }
+    sessionCheck(request.session.get("username"), { Ok(views.html.events()) })
   }
 
   def petView = Action.async { implicit request =>
@@ -83,8 +81,8 @@ class VOPController @Inject() (protected val dbConfigProvider: DatabaseConfigPro
         if (request.session.get("username").nonEmpty) {
           val user = request.session.get("username").getOrElse("MissingNo")
           val stats = models.PetDBModel.getStats(user, db)
-          stats.map { s =>
-            Ok(views.html.pet(s.hunger, s.affection, s.exhaustion))
+          stats.flatMap { s =>
+            Future.successful(Ok(views.html.pet(s.hunger, s.affection, s.exhaustion)))
           }
         } else {
           Future.successful(Ok(views.html.login()))
@@ -132,7 +130,7 @@ class VOPController @Inject() (protected val dbConfigProvider: DatabaseConfigPro
     	    user.map { u =>
     	      models.PetDBModel.newMoney(credentials.username, db)
     	    }
-    	    Future.successful(Ok(views.html.chooseYourPet()))
+    	    Future.successful(Redirect(routes.VOPController.chooseNewPetView()).withSession("username" -> credentials.username))
     	  })
       }
     )
