@@ -7,33 +7,34 @@
 	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
 </head>
 
-<center>
-	<h2>Main Page</h2>
-	<ul class="menu">
-		<li><a class="active" href="@routes.VOPController.mainView">Main</a></li>
-		<li><a href="@routes.VOPController.eventsView">Events</a></li>
-		<li><a href="@routes.VOPController.petView">Pet</a></li>
-		<li><a href="@routes.VOPController.settingsView">Settings</a></li>
-		<li><a href="@routes.VOPController.logout">Log out</a></li>
-	</ul>
-</center>
-
-<div>
-	<div class="map">
-		<a id="map11">Show Off Your Pet</a>
-		<a id="map12">Walk Your Pet</a>
-		<a id="map21">Groom Your Pet</a>
-		<a id="map22" href="@routes.VOPController.shopView">Shop</a>
-	</div>
-	<div class="alert">
-		<center>Notifications</center>
-		<ul>
-			<li>This is a somewhat lengthy test message.</li>
-			<li>This is the second message.</li>
-			<li>This is an extremely long third message that is being used to test whether or not text wraps around properly. I sure hope that it does.</li>
+<div id=map>
+	<center>
+		<h2>Main Page</h2>
+		<ul class="menu">
+			<li><a class="active" href="@routes.VOPController.mainView">Main</a></li>
+			<li><a href="@routes.VOPController.eventsView">Events</a></li>
+			<li><a href="@routes.VOPController.petView">Pet</a></li>
+			<li><a href="@routes.VOPController.settingsView">Settings</a></li>
+			<li><a href="@routes.VOPController.logout">Log out</a></li>
 		</ul>
+	</center>
+	
+	<div>
+		<div class="map">
+			<a id="map11">Show Off Your Pet</a>
+			<a id="map12">Walk Your Pet</a>
+			<a id="map21">Groom Your Pet</a>
+			<a id="map22" href="@routes.VOPController.shopView">Shop</a>
+		</div>
+		<div class="alert">
+			<center>Notifications</center>
+			<ul>
+				<li>This is a somewhat lengthy test message.</li>
+				<li>This is the second message.</li>
+				<li>This is an extremely long third message that is being used to test whether or not text wraps around properly. I sure hope that it does.</li>
+			</ul>
+		</div>
 	</div>
 </div>
-
 <script src="@routes.Assets.versioned("javascript/menuPage.js")"></script>
 }
