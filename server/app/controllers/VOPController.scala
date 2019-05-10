@@ -53,9 +53,11 @@ class VOPController @Inject()(protected val dbConfigProvider: DatabaseConfigProv
     Ok(views.html.map())
   }
   
-  def shopView = Action.async { implicit request => {
-    Future.successful(Ok(views.html.shop(1)))
-  }}
+  def shopView = Action.async { implicit request =>
+    val user = request.session.get("username").getOrElse("MissingNo")
+    val money = models.PetDBModel.getMoney(user, db)
+    money.map(m => Ok(views.html.shop(m.money)))
+  }
   
   def settingsView = Action {
     Ok(views.html.settings())
