@@ -75,23 +75,15 @@ class VOPController @Inject() (protected val dbConfigProvider: DatabaseConfigPro
   }
 
   def petView = Action.async { implicit request =>
-    val postBody = request.body.asFormUrlEncoded
-    postBody.map { args =>
-      try {
-        if (request.session.get("username").nonEmpty) {
-          val user = request.session.get("username").getOrElse("MissingNo")
-          val stats = models.PetDBModel.getStats(user, db)
-          stats.flatMap { s =>
-            Future.successful(Ok(views.html.pet(s.hunger, s.affection, s.exhaustion)))
-          }
-        } else {
-          Future.successful(Ok(views.html.login()))
-        }
-
-      } catch {
-        case ex: NumberFormatException => Future.successful(Redirect("login", 200))
+    if (request.session.get("username").nonEmpty) {
+      val user = request.session.get("username").getOrElse("MissingNo")
+      val stats = models.PetDBModel.getStats(user, db)
+      stats.flatMap { s =>
+        Future.successful(Ok(views.html.pet(s.hunger, s.affection, s.exhaustion)))
       }
-    }.getOrElse(Future.successful(Redirect("login", 200)))
+    } else {
+      Future.successful(Ok(views.html.login()))
+    }
   }
 
   //More involved actions that get form data and manipulate model before redirecting.
