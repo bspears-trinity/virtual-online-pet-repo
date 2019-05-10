@@ -60,12 +60,12 @@ trait Tables {
    *  @param id Database column ID SqlType(INT), AutoInc, PrimaryKey
    *  @param userid Database column UserID SqlType(INT)
    *  @param money Database column Money SqlType(INT)
-   *  @param dateofmoney Database column DateOfMoney SqlType(DATE) */
-  case class MoneyRow(id: Int, userid: Int, money: Int, dateofmoney: java.sql.Date)
+   *  @param dateofmoney Database column DateOfMoney SqlType(DATETIME) */
+  case class MoneyRow(id: Int, userid: Int, money: Int, dateofmoney: java.sql.Timestamp)
   /** GetResult implicit for fetching MoneyRow objects using plain SQL queries */
-  implicit def GetResultMoneyRow(implicit e0: GR[Int], e1: GR[java.sql.Date]): GR[MoneyRow] = GR{
+  implicit def GetResultMoneyRow(implicit e0: GR[Int], e1: GR[java.sql.Timestamp]): GR[MoneyRow] = GR{
     prs => import prs._
-    MoneyRow.tupled((<<[Int], <<[Int], <<[Int], <<[java.sql.Date]))
+    MoneyRow.tupled((<<[Int], <<[Int], <<[Int], <<[java.sql.Timestamp]))
   }
   /** Table description of table Money. Objects of this class serve as prototypes for rows in queries. */
   class Money(_tableTag: Tag) extends profile.api.Table[MoneyRow](_tableTag, Some("virtualpet"), "Money") {
@@ -79,8 +79,8 @@ trait Tables {
     val userid: Rep[Int] = column[Int]("UserID")
     /** Database column Money SqlType(INT) */
     val money: Rep[Int] = column[Int]("Money")
-    /** Database column DateOfMoney SqlType(DATE) */
-    val dateofmoney: Rep[java.sql.Date] = column[java.sql.Date]("DateOfMoney")
+    /** Database column DateOfMoney SqlType(DATETIME) */
+    val dateofmoney: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("DateOfMoney")
   }
   /** Collection-like TableQuery object for table Money */
   lazy val Money = new TableQuery(tag => new Money(tag))
@@ -89,13 +89,13 @@ trait Tables {
    *  @param id Database column ID SqlType(INT), AutoInc, PrimaryKey
    *  @param userid Database column UserID SqlType(INT)
    *  @param name Database column Name SqlType(VARCHAR), Length(50,true)
-   *  @param adoptiondate Database column AdoptionDate SqlType(DATE)
+   *  @param adoptiondate Database column AdoptionDate SqlType(DATETIME)
    *  @param icon Database column Icon SqlType(INT) */
-  case class PetRow(id: Int, userid: Int, name: String, adoptiondate: java.sql.Date, icon: Int)
+  case class PetRow(id: Int, userid: Int, name: String, adoptiondate: java.sql.Timestamp, icon: Int)
   /** GetResult implicit for fetching PetRow objects using plain SQL queries */
-  implicit def GetResultPetRow(implicit e0: GR[Int], e1: GR[String], e2: GR[java.sql.Date]): GR[PetRow] = GR{
+  implicit def GetResultPetRow(implicit e0: GR[Int], e1: GR[String], e2: GR[java.sql.Timestamp]): GR[PetRow] = GR{
     prs => import prs._
-    PetRow.tupled((<<[Int], <<[Int], <<[String], <<[java.sql.Date], <<[Int]))
+    PetRow.tupled((<<[Int], <<[Int], <<[String], <<[java.sql.Timestamp], <<[Int]))
   }
   /** Table description of table Pet. Objects of this class serve as prototypes for rows in queries. */
   class Pet(_tableTag: Tag) extends profile.api.Table[PetRow](_tableTag, Some("virtualpet"), "Pet") {
@@ -109,8 +109,8 @@ trait Tables {
     val userid: Rep[Int] = column[Int]("UserID")
     /** Database column Name SqlType(VARCHAR), Length(50,true) */
     val name: Rep[String] = column[String]("Name", O.Length(50,varying=true))
-    /** Database column AdoptionDate SqlType(DATE) */
-    val adoptiondate: Rep[java.sql.Date] = column[java.sql.Date]("AdoptionDate")
+    /** Database column AdoptionDate SqlType(DATETIME) */
+    val adoptiondate: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("AdoptionDate")
     /** Database column Icon SqlType(INT) */
     val icon: Rep[Int] = column[Int]("Icon")
   }
@@ -123,12 +123,12 @@ trait Tables {
    *  @param affection Database column Affection SqlType(INT)
    *  @param hunger Database column Hunger SqlType(INT)
    *  @param exhaustion Database column Exhaustion SqlType(INT)
-   *  @param statdate Database column StatDate SqlType(DATE) */
-  case class StatsRow(id: Int, petid: Int, affection: Int, hunger: Int, exhaustion: Int, statdate: java.sql.Date)
+   *  @param statdate Database column StatDate SqlType(DATETIME) */
+  case class StatsRow(id: Int, petid: Int, affection: Int, hunger: Int, exhaustion: Int, statdate: java.sql.Timestamp)
   /** GetResult implicit for fetching StatsRow objects using plain SQL queries */
-  implicit def GetResultStatsRow(implicit e0: GR[Int], e1: GR[java.sql.Date]): GR[StatsRow] = GR{
+  implicit def GetResultStatsRow(implicit e0: GR[Int], e1: GR[java.sql.Timestamp]): GR[StatsRow] = GR{
     prs => import prs._
-    StatsRow.tupled((<<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[java.sql.Date]))
+    StatsRow.tupled((<<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[java.sql.Timestamp]))
   }
   /** Table description of table Stats. Objects of this class serve as prototypes for rows in queries. */
   class Stats(_tableTag: Tag) extends profile.api.Table[StatsRow](_tableTag, Some("virtualpet"), "Stats") {
@@ -146,8 +146,8 @@ trait Tables {
     val hunger: Rep[Int] = column[Int]("Hunger")
     /** Database column Exhaustion SqlType(INT) */
     val exhaustion: Rep[Int] = column[Int]("Exhaustion")
-    /** Database column StatDate SqlType(DATE) */
-    val statdate: Rep[java.sql.Date] = column[java.sql.Date]("StatDate")
+    /** Database column StatDate SqlType(DATETIME) */
+    val statdate: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("StatDate")
   }
   /** Collection-like TableQuery object for table Stats */
   lazy val Stats = new TableQuery(tag => new Stats(tag))
@@ -156,12 +156,12 @@ trait Tables {
    *  @param id Database column ID SqlType(INT), AutoInc, PrimaryKey
    *  @param username Database column Username SqlType(VARCHAR), Length(50,true)
    *  @param password Database column Password SqlType(VARCHAR), Length(50,true)
-   *  @param creationdate Database column CreationDate SqlType(DATE) */
-  case class UserRow(id: Int, username: String, password: String, creationdate: java.sql.Date)
+   *  @param creationdate Database column CreationDate SqlType(DATETIME) */
+  case class UserRow(id: Int, username: String, password: String, creationdate: java.sql.Timestamp)
   /** GetResult implicit for fetching UserRow objects using plain SQL queries */
-  implicit def GetResultUserRow(implicit e0: GR[Int], e1: GR[String], e2: GR[java.sql.Date]): GR[UserRow] = GR{
+  implicit def GetResultUserRow(implicit e0: GR[Int], e1: GR[String], e2: GR[java.sql.Timestamp]): GR[UserRow] = GR{
     prs => import prs._
-    UserRow.tupled((<<[Int], <<[String], <<[String], <<[java.sql.Date]))
+    UserRow.tupled((<<[Int], <<[String], <<[String], <<[java.sql.Timestamp]))
   }
   /** Table description of table User. Objects of this class serve as prototypes for rows in queries. */
   class User(_tableTag: Tag) extends profile.api.Table[UserRow](_tableTag, Some("virtualpet"), "User") {
@@ -175,8 +175,8 @@ trait Tables {
     val username: Rep[String] = column[String]("Username", O.Length(50,varying=true))
     /** Database column Password SqlType(VARCHAR), Length(50,true) */
     val password: Rep[String] = column[String]("Password", O.Length(50,varying=true))
-    /** Database column CreationDate SqlType(DATE) */
-    val creationdate: Rep[java.sql.Date] = column[java.sql.Date]("CreationDate")
+    /** Database column CreationDate SqlType(DATETIME) */
+    val creationdate: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("CreationDate")
   }
   /** Collection-like TableQuery object for table User */
   lazy val User = new TableQuery(tag => new User(tag))
@@ -184,12 +184,12 @@ trait Tables {
   /** Entity class storing rows of table Userdate
    *  @param id Database column ID SqlType(INT), AutoInc, PrimaryKey
    *  @param userid Database column UserID SqlType(INT)
-   *  @param updatelast Database column UpdateLast SqlType(DATE), Default(None) */
-  case class UserdateRow(id: Int, userid: Int, updatelast: Option[java.sql.Date] = None)
+   *  @param updatelast Database column UpdateLast SqlType(DATETIME), Default(None) */
+  case class UserdateRow(id: Int, userid: Int, updatelast: Option[java.sql.Timestamp] = None)
   /** GetResult implicit for fetching UserdateRow objects using plain SQL queries */
-  implicit def GetResultUserdateRow(implicit e0: GR[Int], e1: GR[Option[java.sql.Date]]): GR[UserdateRow] = GR{
+  implicit def GetResultUserdateRow(implicit e0: GR[Int], e1: GR[Option[java.sql.Timestamp]]): GR[UserdateRow] = GR{
     prs => import prs._
-    UserdateRow.tupled((<<[Int], <<[Int], <<?[java.sql.Date]))
+    UserdateRow.tupled((<<[Int], <<[Int], <<?[java.sql.Timestamp]))
   }
   /** Table description of table UserDate. Objects of this class serve as prototypes for rows in queries. */
   class Userdate(_tableTag: Tag) extends profile.api.Table[UserdateRow](_tableTag, Some("virtualpet"), "UserDate") {
@@ -201,8 +201,8 @@ trait Tables {
     val id: Rep[Int] = column[Int]("ID", O.AutoInc, O.PrimaryKey)
     /** Database column UserID SqlType(INT) */
     val userid: Rep[Int] = column[Int]("UserID")
-    /** Database column UpdateLast SqlType(DATE), Default(None) */
-    val updatelast: Rep[Option[java.sql.Date]] = column[Option[java.sql.Date]]("UpdateLast", O.Default(None))
+    /** Database column UpdateLast SqlType(DATETIME), Default(None) */
+    val updatelast: Rep[Option[java.sql.Timestamp]] = column[Option[java.sql.Timestamp]]("UpdateLast", O.Default(None))
   }
   /** Collection-like TableQuery object for table Userdate */
   lazy val Userdate = new TableQuery(tag => new Userdate(tag))
@@ -211,13 +211,13 @@ trait Tables {
    *  @param id Database column ID SqlType(INT), AutoInc, PrimaryKey
    *  @param userid Database column UserID SqlType(INT)
    *  @param notificationid Database column NotificationID SqlType(INT)
-   *  @param senddate Database column SendDate SqlType(DATE)
+   *  @param senddate Database column SendDate SqlType(DATETIME)
    *  @param viewed Database column Viewed SqlType(ENUM) */
-  case class UsereventRow(id: Int, userid: Int, notificationid: Int, senddate: java.sql.Date, viewed: Char)
+  case class UsereventRow(id: Int, userid: Int, notificationid: Int, senddate: java.sql.Timestamp, viewed: Char)
   /** GetResult implicit for fetching UsereventRow objects using plain SQL queries */
-  implicit def GetResultUsereventRow(implicit e0: GR[Int], e1: GR[java.sql.Date], e2: GR[Char]): GR[UsereventRow] = GR{
+  implicit def GetResultUsereventRow(implicit e0: GR[Int], e1: GR[java.sql.Timestamp], e2: GR[Char]): GR[UsereventRow] = GR{
     prs => import prs._
-    UsereventRow.tupled((<<[Int], <<[Int], <<[Int], <<[java.sql.Date], <<[Char]))
+    UsereventRow.tupled((<<[Int], <<[Int], <<[Int], <<[java.sql.Timestamp], <<[Char]))
   }
   /** Table description of table UserEvent. Objects of this class serve as prototypes for rows in queries. */
   class Userevent(_tableTag: Tag) extends profile.api.Table[UsereventRow](_tableTag, Some("virtualpet"), "UserEvent") {
@@ -231,8 +231,8 @@ trait Tables {
     val userid: Rep[Int] = column[Int]("UserID")
     /** Database column NotificationID SqlType(INT) */
     val notificationid: Rep[Int] = column[Int]("NotificationID")
-    /** Database column SendDate SqlType(DATE) */
-    val senddate: Rep[java.sql.Date] = column[java.sql.Date]("SendDate")
+    /** Database column SendDate SqlType(DATETIME) */
+    val senddate: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("SendDate")
     /** Database column Viewed SqlType(ENUM) */
     val viewed: Rep[Char] = column[Char]("Viewed")
   }

@@ -33,7 +33,7 @@ object PetDBModel {
   def addUser(username: String, password: String, db: Database)(implicit ec: ExecutionContext): Future[Int] = {
     db.run {
       val date = new java.util.Date()
-      val sqlDate = new java.sql.Date(date.getTime())
+      val sqlDate = new java.sql.Timestamp(date.getTime)
       User += UserRow(0, username, password, sqlDate)
     }
   }
@@ -50,7 +50,7 @@ object PetDBModel {
     }
     ids.flatMap { seq => 
       val date = new java.util.Date()
-      val sqlDate = new java.sql.Date(date.getTime())
+      val sqlDate = new java.sql.Timestamp(date.getTime)
       db.run(Userdate += UserdateRow(0,seq.head,Option(sqlDate)))
     }
   }
@@ -79,7 +79,7 @@ object PetDBModel {
     }
     ids.flatMap { seq => 
       val date = new java.util.Date()
-      val sqlDate = new java.sql.Date(date.getTime())
+      val sqlDate = new java.sql.Timestamp(date.getTime)
       db.run(Pet += PetRow(0, seq.head, petName, sqlDate, Icon))
     }
   }
@@ -113,8 +113,8 @@ object PetDBModel {
     }
     ids.flatMap { seq =>
       val date = new java.util.Date()
-      val sqlDate = new java.sql.Date(date.getTime())
-      val prev = db.run { Stats.filter(_.petid === seq.head).sortBy(_.statdate.desc).result }
+      val sqlDate = new java.sql.Timestamp(date.getTime)
+      val prev = db.run { Stats.filter(_.petid === seq.head).sortBy(_.statdate.desc).take(1).result }
       prev.flatMap { p =>
         var aff = p.head.affection+AffectionInc
         if(aff < 0) aff = 0
@@ -125,7 +125,7 @@ object PetDBModel {
         var exh = p.head.exhaustion+ExhaustionInc
         if(exh < 0) exh = 0
         if(exh > 100) exh = 100
-        db.run(Stats += StatsRow(0, p.head.id, aff,hung, exh, sqlDate))
+        db.run(Stats += StatsRow(0, seq.head, aff,hung, exh, sqlDate))
       }
     }
   }
@@ -143,7 +143,7 @@ object PetDBModel {
     }
     ids.flatMap { seq =>
       val date = new java.util.Date()
-      val sqlDate = new java.sql.Date(date.getTime())
+      val sqlDate = new java.sql.Timestamp(date.getTime)
       db.run(Stats += StatsRow(0, seq.head, 50, 0, 0, sqlDate))
     }
   }
@@ -159,10 +159,10 @@ object PetDBModel {
     }
     ids.flatMap { seq =>
       val date = new java.util.Date()
-      val sqlDate = new java.sql.Date(date.getTime())
-      val prev = db.run { Money.filter(_.userid === seq.head).sortBy(_.dateofmoney.desc).result }
+      val sqlDate = new java.sql.Timestamp(date.getTime)
+      val prev = db.run { Money.filter(_.userid === seq.head).sortBy(_.dateofmoney.desc).take(1).result.head }
       prev.flatMap { p =>
-        db.run(Money += MoneyRow(0, p.head.id, p.head.money + MoneyInc, sqlDate))
+        db.run(Money += MoneyRow(0, seq.head, p.money + MoneyInc, sqlDate))
       }
     }
   }
@@ -178,7 +178,7 @@ object PetDBModel {
     }
     ids.flatMap { seq =>
       val date = new java.util.Date()
-      val sqlDate = new java.sql.Date(date.getTime())
+      val sqlDate = new java.sql.Timestamp(date.getTime)
       db.run(Money += MoneyRow(0, seq.head, 1000, sqlDate))
     }
   }
@@ -196,7 +196,7 @@ object PetDBModel {
   	
     uids.flatMap { useq =>
       val date = new java.util.Date()
-      val sqlDate = new java.sql.Date(date.getTime())
+      val sqlDate = new java.sql.Timestamp(date.getTime)
       db.run(Userevent += UsereventRow(0, useq.head, EventID, sqlDate, 'F'))        
     }
   }
@@ -230,7 +230,7 @@ object PetDBModel {
       }).result
     }
   	ids.flatMap { seq =>
-  	  db.run(Stats.filter(_.petid === seq.head).sortBy(_.statdate.desc).result.head)
+  	  db.run(Stats.filter(_.petid === seq.head).sortBy(_.statdate.desc).take(1).result.head)
   	}
   }
   
@@ -244,7 +244,7 @@ object PetDBModel {
       }).result
     }
     ids.flatMap { seq =>
-      db.run(Money.filter(_.userid === seq.head).sortBy(_.dateofmoney.desc).result.head)
+      db.run(Money.filter(_.userid === seq.head).sortBy(_.dateofmoney.desc).take(1).result.head)
     }
   }
   
@@ -294,7 +294,7 @@ object PetDBModel {
         if ud.userid === u.id
       } yield {
         ud
-      }).sortBy(_.updatelast.desc).result.head
+      }).sortBy(_.updatelast.desc).take(1).result.head
     }
   }
   
@@ -307,7 +307,7 @@ object PetDBModel {
         if p.userid === u.id
       } yield {
         p
-      }).sortBy(_.adoptiondate.desc).result.head
+      }).sortBy(_.adoptiondate.desc).take(1).result.head
     }
   }
   
