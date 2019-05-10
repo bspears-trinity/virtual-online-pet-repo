@@ -167,6 +167,22 @@ object PetDBModel {
     }
   }
   
+  def newMoney(username: String, db: Database)(implicit ec: ExecutionContext): Future[Int] = {
+    val ids = db.run {
+      (for {
+        u <- User
+        if u.username === username
+      } yield {
+        u.id
+      }).result
+    }
+    ids.flatMap { seq =>
+      val date = new java.util.Date()
+      val sqlDate = new java.sql.Date(date.getTime())
+      db.run(Money += MoneyRow(0, seq.head, 1000, sqlDate))
+    }
+  }
+  
   def addEvent(username: String, EventID: Int, db: Database)(implicit ec: ExecutionContext): Future[Int] = {
   	//add event to table and apply to user. If event is already found, only apply to user
     val uids = db.run {
