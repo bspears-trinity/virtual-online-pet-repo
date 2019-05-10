@@ -18,9 +18,11 @@
 	</ul>
 </center>
 
+<div id="money">$$$@money</div>
+
 <div>
 	<div class="pic">
-		INSERT PICTURE OF SHOP KEEP HERE
+		<img src="http://earthporm.com/wp-content/uploads/2014/08/dog-shopkeeper-5.jpg" height=200 width=200>
 	</div>
 	<div class="info">
 		<center>Stock</center>
@@ -28,19 +30,19 @@
 			<li>
 				Treat
 				<form @*action="" type="get"*@>
-					<input type="submit" value="Buy"></input>
+					<input type="submit" value="Buy" id="treatBuy"></input>
 				</form>
 			</li>
 			<li>
 				Food
 				<form @*action="" type="get"*@>
-					<input type="submit" value="Buy"></input>
+					<input type="submit" value="Buy" id="foodBuy"></input>
 				</form>
 			</li>
 			<li>
 				Blanky
 				<form @*action="" type="get"*@>
-					<input type="submit" value="Buy"></input>
+					<input type="submit" value="Buy" id="blankyBuy"></input>
 				</form>
 			</li>
 		</ul>
@@ -54,4 +56,6 @@
 		</ul>
 	</div>
 </div>
+
+<script src="@routes.Assets.versioned("javascript/menuPage.js")"></script>
 }
