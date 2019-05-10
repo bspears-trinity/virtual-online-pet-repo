@@ -47,29 +47,29 @@ class VOPController @Inject()(protected val dbConfigProvider: DatabaseConfigProv
     Ok(views.html.accountCreation(loginForm))  
   }
   
-  def changePasswordView = Action {
-    Ok(views.html.changePW(changePasswordForm))
+  def changePasswordView = Action { implicit request => 
+    sessionCheck(request.session.get("username"), {Ok(views.html.changePW(changePasswordForm))})
   }
   
-  def chooseNewPetView = Action {
-    Ok(views.html.chooseYourPet())
+  def chooseNewPetView = Action { implicit request =>
+    sessionCheck(request.session.get("username"), {Ok(views.html.chooseYourPet())})
   }
   
-  def mainView = Action {
-    Ok(views.html.map())
+  def mainView = Action { implicit request =>
+    sessionCheck(request.session.get("username"), {Ok(views.html.map())})
   }
   
-  def shopView = Action.async { implicit request => {
-    Future.successful(Ok(views.html.shop(1)))
+  def shopView = Action/*.async*/ { implicit request => {
+    sessionCheck(request.session.get("username"), {Ok(views.html.shop(1))})//Future.successful(Ok(views.html.shop(1)))
   }}
   
-  def settingsView = Action {
-    Ok(views.html.settings())
-  }
+  def settingsView = Action { implicit request => {
+    sessionCheck(request.session.get("username"), {Ok(views.html.settings())}) 
+  }}
   
-  def eventsView = Action {
-    Ok(views.html.events())
-  }
+  def eventsView = Action { implicit request => {
+    sessionCheck(request.session.get("username"), {Ok(views.html.events())}) 
+  }}
   
   def petView = Action.async { implicit request =>
     val postBody = request.body.asFormUrlEncoded
@@ -88,19 +88,20 @@ class VOPController @Inject()(protected val dbConfigProvider: DatabaseConfigProv
   
   //More involved actions that get form data and manipulate model before redirecting.
   
-  def login = Action.async { implicit request =>
+  def login = Action { implicit request =>
     //Gets user credentials from form, then verifies them through the database. If valid, starts a user session and directs to main page. Else, return to login page.
     loginForm.bindFromRequest.fold(
-      formWithErrors => Future.successful(BadRequest(views.html.login(formWithErrors))),
+      formWithErrors => BadRequest(views.html.login(formWithErrors)), //Future.successful(BadRequest(views.html.login(formWithErrors))),
       credentials => {
-        val isValid = models.PetDBModel.getLogin(credentials.username, credentials.password, db)
-        isValid.map(valid => {
-          if (valid) {
-            Redirect(routes.VOPController.mainView).withSession("username" -> credentials.username)
-          } else {
-            BadRequest(views.html.login(loginForm))
-          }
-        })    
+        Redirect(routes.VOPController.mainView).withSession("username" -> credentials.username)
+//        val isValid = models.PetDBModel.getLogin(credentials.username, credentials.password, db)
+//        isValid.map(valid => {
+//          if (valid) {
+//            Redirect(routes.VOPController.mainView).withSession("username" -> credentials.username)
+//          } else {
+//            BadRequest(views.html.login(loginForm))
+//          }
+//        })    
       }
     )
   }
@@ -131,7 +132,7 @@ class VOPController @Inject()(protected val dbConfigProvider: DatabaseConfigProv
   
   def changePassword = Action { implicit request => 
     //TODO: Verify old password and update database with new password, then return settings view
-    Ok(views.html.index("Password changed: redirect to settings view"))
+    sessionCheck(request.session.get("username"), {Ok(views.html.settings())}) 
   }
   
   def deleteUser = Action { implicit request =>
@@ -139,9 +140,18 @@ class VOPController @Inject()(protected val dbConfigProvider: DatabaseConfigProv
     Ok(views.html.login()).withNewSession
   }
   
-  def newPet(petImg: Int) = Action { implicit request => 
-    //TODO: Get form data on new pet and add to database through model.
-    Ok(views.html.map())
+  def newPet(petImg: Int) = Action.async { implicit request => 
+    newPetForm.bindFromRequest.fold(
+      formWithErrors => Future.successful(BadRequest(views.html.chooseYourPet(formWithErrors))),
+      petInfo => {
+        if(request.session.get("username").nonEmpty) {
+          val res = models.PetDBModel.addPet(request.session.get("username").getOrElse("Missingno"), petInfo.name, petInfo.pic, db)
+          res.map(r => Ok(views.html.map()))
+        } else {
+          Future.successful(Ok(views.html.login(loginForm)))
+        }
+    
+    })
   }
   
   def abandonPet = Action { implicit request => 
@@ -181,6 +191,14 @@ class VOPController @Inject()(protected val dbConfigProvider: DatabaseConfigProv
   def newNotifications = Action { implicit request =>
     //TODO: Check user's notifications for any that need to be displayed. Return new notifications and update database to show that they have been displayed.
     Ok("New Notifications returned")
+  }
+  
+  private[this] def sessionCheck(username: Option[String], op: => play.api.mvc.Result):play.api.mvc.Result = {
+    if (username.nonEmpty) {
+      op;
+    } else {
+      Redirect(routes.VOPController.loginView())
+    }
   }
 }
 

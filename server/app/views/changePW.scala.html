@@ -7,8 +7,10 @@
     <h2>Change Password</h2>    
     <div></div>
     
-    <form method="post">
-        <input type="text" name="Password"></input>
-        <input type="submit" name="Change"></input>
+    <form method="post" action=@routes.VOPController.changePassword>
+     @helper.CSRF.formField
+    	<input type="text" name="oldPassword" required></input>
+        <input type="text" name="newPassword" required></input>
+        <input type="submit" name="change"></input>
     </form>
 }

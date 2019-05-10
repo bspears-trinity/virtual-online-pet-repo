@@ -1,5 +1,5 @@
 @* login Template File *@
-@(param: Any)
+@(loginForm: Form[LoginData])
 
 @main("login") {
     <h1><a href="@routes.VOPController.loginView">Virtual Online Pet</a></h1>
@@ -10,12 +10,13 @@
 
     
     <div class="loginform">
-    <form action="@routes.VOPController.chooseNewPetView" method="get">
+    <form action="@routes.VOPController.login" method="post">
+    @helper.CSRF.formField
         Username:<br>
-        <input type="text" name="Username"></input>
+        <input type="text" name="username" required></input>
         <br>
         Password:<br>
-        <input type="text" name="Password"></input>
+        <input type="password" name="password" required></input>
         <br>
         <input type="submit" name="Login" value="Login"></input>
     </form>
