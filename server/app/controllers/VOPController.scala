@@ -251,7 +251,7 @@ class VOPController @Inject() (protected val dbConfigProvider: DatabaseConfigPro
       Event.flatMap { e =>
         val mon = models.PetDBModel.getMoney(user, db)
         mon.flatMap(m => {
-          if (m.money + e.moneyinc > 0) {
+          if (m.money + e.moneyinc >= 0) {
             models.PetDBModel.updateStats(user, e.affectioninc, e.hungerinc, e.exhaustioninc, db)
             models.PetDBModel.updateMoney(user, e.moneyinc, db)
             Future.successful(Ok("Item bought"))
@@ -312,6 +312,7 @@ class VOPController @Inject() (protected val dbConfigProvider: DatabaseConfigPro
             }
           }
           models.PetDBModel.addVisit(user, db)
+          models.PetDBModel.updateStats(user, -20, 20, 20, db)
           Future.successful(Ok("Added event"))
         } else {
           Future.successful(Ok("No new event"))
