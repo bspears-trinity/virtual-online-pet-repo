@@ -246,12 +246,12 @@ class VOPController @Inject() (protected val dbConfigProvider: DatabaseConfigPro
     //TODO: Use JQuery to update money label
     if (request.session.get("username").nonEmpty) {
       val user = request.session.get("username").getOrElse("MissingNo")
-      val walk = models.PetDBModel.addEvent(user, itemID + 6, db)
       val Event = models.PetDBModel.getEvent(itemID + 6, db)
       Event.flatMap { e =>
         val mon = models.PetDBModel.getMoney(user, db)
         mon.flatMap(m => {
-          if (m.money + e.moneyinc >= 0) {
+          if (m.money + e.moneyinc >= 0) {   
+            val walk = models.PetDBModel.addEvent(user, itemID + 6, db)
             models.PetDBModel.updateStats(user, e.affectioninc, e.hungerinc, e.exhaustioninc, db)
             models.PetDBModel.updateMoney(user, e.moneyinc, db)
             Future.successful(Ok("Item bought"))
