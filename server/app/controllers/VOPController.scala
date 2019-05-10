@@ -272,7 +272,7 @@ class VOPController @Inject() (protected val dbConfigProvider: DatabaseConfigPro
       val lastvisit = models.PetDBModel.getLastVisit(user, db)
       lastvisit.flatMap { l =>
         val date = new java.util.Date()
-        val sqlDate = new java.sql.Date(date.getTime())
+        val sqlDate = new java.sql.Timestamp(date.getTime)
         if (l.updatelast.getOrElse(sqlDate).getMinutes < sqlDate.getMinutes - 5) {
           val r = math.random()
           if (r < 0.2) {
@@ -328,7 +328,12 @@ class VOPController @Inject() (protected val dbConfigProvider: DatabaseConfigPro
     if (request.session.get("username").nonEmpty) {
       val user = request.session.get("username").getOrElse("MissingNo")
       val newnotes = models.PetDBModel.getNotif(user, db)
-      Future.successful(Ok("New Notifications returned"))
+      newnotes.flatMap(events => {
+        //models.PetDBModel.viewEvent(user, db)
+        val notesString = events.map(e => e.message).mkString(";")
+        Future.successful(Ok(notesString))
+      })
+      
     } else {
       Future.successful(Ok("not logged in"));
     }
