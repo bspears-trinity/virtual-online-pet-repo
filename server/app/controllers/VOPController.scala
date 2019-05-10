@@ -120,6 +120,7 @@ class VOPController @Inject() (protected val dbConfigProvider: DatabaseConfigPro
     	  } else {
     	    val user = models.PetDBModel.addUser(credentials.username, credentials.password, db)
     	    user.map { u =>
+    	      models.PetDBModel.addVisit(credentials.username, db)
     	      models.PetDBModel.newMoney(credentials.username, db)
     	    }
     	    Future.successful(Redirect(routes.VOPController.chooseNewPetView()).withSession("username" -> credentials.username))
