@@ -3,11 +3,7 @@
 
 @main("Virtual Pet") {
 
-<head>
-	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
-</head>
 
-<div id=map>
 	<center>
 		<h2>Main Page</h2>
 		<ul class="menu">
@@ -21,13 +17,14 @@
 	
 	<div>
 		<div class="map">
+			<canvas id = "map"></canvas>
 			<a id="map11">Show Off Your Pet</a>
 			<a id="map12">Walk Your Pet</a>
 			<a id="map21">Groom Your Pet</a>
 			<a id="map22" href="@routes.VOPController.shopView">Shop</a>
 		</div>
 		<div class="alert">
-			<center>Notifications</center>
+			<center id="notif">Notifications</center>
 			<ul>
 				<li>This is a somewhat lengthy test message.</li>
 				<li>This is the second message.</li>
@@ -35,6 +32,6 @@
 			</ul>
 		</div>
 	</div>
-</div>
+
 <script src="@routes.Assets.versioned("javascript/menuPage.js")"></script>
 }

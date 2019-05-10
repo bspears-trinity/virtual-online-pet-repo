@@ -201,7 +201,7 @@ object PetDBModel {
     }
   }
   
-  def viewEvent(username: String, message: String, db: Database) {
+  def viewEvent(username: String, message: String, db: Database)(implicit ec: ExecutionContext): Future[Int] =  {
     db.run {
       val view =for {
         u <- User
